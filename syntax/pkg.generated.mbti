@@ -1,0 +1,309 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Yoorkin/webidl/syntax"
+
+import(
+  "moonbitlang/core/list"
+)
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct Argument {
+  name : String
+  idl_type : IDLTypeWithExtAttr
+  default : Value?
+  optional : Bool
+  variadic : Bool
+  attrs : @list.List[ExtAttr]
+}
+impl Show for Argument
+
+pub(all) struct AsyncIterable {
+  idl_type : IDLTypeWithExtAttr
+  opt_type : IDLTypeWithExtAttr?
+  arguments : @list.List[Argument]
+  attrs : @list.List[ExtAttr]
+}
+impl Show for AsyncIterable
+
+pub(all) struct Attribute {
+  name : String
+  special : AttributeKind
+  readonly_ : Bool
+  idl_type : IDLTypeWithExtAttr
+  attrs : @list.List[ExtAttr]
+}
+impl Show for Attribute
+
+pub(all) enum AttributeKind {
+  Regular
+  Static
+  Stringifier
+  Inherit
+}
+impl Show for AttributeKind
+
+pub(all) struct Callback {
+  name : String
+  idl_type : IDLType
+  arguments : @list.List[Argument]
+  attrs : @list.List[ExtAttr]
+}
+impl Show for Callback
+
+pub(all) struct Const {
+  name : String
+  idl_type : IDLType
+  value : Value
+  attrs : @list.List[ExtAttr]
+}
+impl Show for Const
+
+pub(all) struct Constructor {
+  arguments : @list.List[Argument]
+  attrs : @list.List[ExtAttr]
+}
+impl Show for Constructor
+
+pub(all) enum Definition {
+  Interface(Interface)
+  InterfaceMixin(InterfaceMixin)
+  Namespace(Namespace)
+  Callback(Callback)
+  Dictionary(Dictionary)
+  Enum(Enum)
+  Typedef(Typedef)
+  Includes(Includes)
+}
+impl Show for Definition
+
+pub(all) struct Dictionary {
+  name : String
+  partial : Bool
+  members : @list.List[DictionaryField]
+  inherit : String?
+  attrs : @list.List[ExtAttr]
+}
+impl Show for Dictionary
+
+pub(all) struct DictionaryField {
+  name : String
+  required : Bool
+  idl_type : IDLTypeWithExtAttr
+  attrs : @list.List[ExtAttr]
+  default : Value?
+}
+impl Show for DictionaryField
+
+pub(all) struct Enum {
+  name : String
+  values : @list.List[String]
+  attrs : @list.List[ExtAttr]
+}
+impl Show for Enum
+
+pub(all) struct ExtAttr {
+  name : String
+  arguments : @list.List[Argument]
+  rhs : Rhs?
+}
+impl Show for ExtAttr
+
+pub(all) enum FloatingType {
+  Float
+  Double
+  Unrestricted(FloatingType)
+}
+impl Show for FloatingType
+
+pub(all) enum IDLType {
+  Integer(IntegerType)
+  String(StringType)
+  Floating(FloatingType)
+  Nullable(IDLType)
+  Union(@list.List[IDLTypeWithExtAttr])
+  Id(String)
+  ArrayBuffer
+  SharedArrayBuffer
+  DataView
+  Int8Array
+  Int16Array
+  Int32Array
+  Uint8Array
+  Uint16Array
+  Uint32Array
+  Uint8ClampedArray
+  BigInt64Array
+  BigUint64Array
+  Float16Array
+  Float32Array
+  Float64Array
+  Boolean
+  Byte
+  Octet
+  Bigint
+  Object
+  Identifer
+  Symbol
+  Undefined
+  Promise(IDLType)
+  Record(StringType, IDLTypeWithExtAttr)
+  Sequence(IDLTypeWithExtAttr)
+  AsyncSequence(IDLTypeWithExtAttr)
+  FrozenArray(IDLTypeWithExtAttr)
+  ObservableArray(IDLTypeWithExtAttr)
+  Any
+}
+impl Show for IDLType
+
+pub(all) struct IDLTypeWithExtAttr {
+  attrs : @list.List[ExtAttr]
+  ty : IDLType
+}
+impl Show for IDLTypeWithExtAttr
+
+pub(all) struct Includes {
+  target : String
+  includes : String
+  attrs : @list.List[ExtAttr]
+}
+impl Show for Includes
+
+pub(all) enum IntegerType {
+  Short
+  Long
+  LongLong
+  Unsigned(IntegerType)
+}
+impl Show for IntegerType
+
+pub(all) struct Interface {
+  name : String
+  partial : Bool
+  members : @list.List[Member]
+  inherit : String?
+  attrs : @list.List[ExtAttr]
+}
+impl Show for Interface
+
+pub(all) struct InterfaceMixin {
+  name : String
+  partial : Bool
+  members : @list.List[Member]
+  attrs : @list.List[ExtAttr]
+}
+impl Show for InterfaceMixin
+
+pub(all) struct Iterable {
+  idl_type : IDLTypeWithExtAttr
+  opt_type : IDLTypeWithExtAttr?
+  async_ : Bool
+  attrs : @list.List[ExtAttr]
+}
+impl Show for Iterable
+
+pub(all) struct MapLike {
+  idl_type : IDLTypeWithExtAttr
+  readonly_ : Bool
+  attrs : @list.List[ExtAttr]
+}
+impl Show for MapLike
+
+pub(all) enum Member {
+  Operation(Operation)
+  Constructor(Constructor)
+  Attribute(Attribute)
+  Const(Const)
+  Iterable(Iterable)
+  AsyncIterable(AsyncIterable)
+  MapLike(MapLike)
+  SetLike(SetLike)
+}
+impl Show for Member
+
+pub(all) struct Namespace {
+  name : String
+  partial : Bool
+  members : @list.List[Member]
+  attrs : @list.List[ExtAttr]
+}
+impl Show for Namespace
+
+pub(all) struct Operation {
+  special : OperationKind
+  idl_type : IDLType?
+  name : String?
+  arguments : @list.List[Argument]
+  attrs : @list.List[ExtAttr]
+}
+impl Show for Operation
+
+pub(all) enum OperationKind {
+  Regular
+  Getter
+  Setter
+  Deleter
+  Static
+  Stringifier
+}
+impl Show for OperationKind
+
+pub(all) enum Rhs {
+  Identifier(String)
+  IdentifierList(@list.List[String])
+  String(String)
+  StringList(@list.List[String])
+  Decimal(String)
+  DecimalList(@list.List[String])
+  Integer(String)
+  IntegerList(@list.List[String])
+  Star
+}
+impl Show for Rhs
+
+pub(all) struct SetLike {
+  idl_type : IDLTypeWithExtAttr
+  readonly_ : Bool
+  attrs : @list.List[ExtAttr]
+}
+impl Show for SetLike
+
+pub(all) enum StringType {
+  ByteString
+  DOMString
+  USVString
+}
+impl Show for StringType
+
+pub(all) struct Typedef {
+  name : String
+  idl_type : IDLTypeWithExtAttr
+  attrs : @list.List[ExtAttr]
+}
+impl Show for Typedef
+
+pub(all) enum Value {
+  Decimal(String)
+  Undefined
+  String(String)
+  Number(String)
+  Boolean(Bool)
+  Null
+  Infinity(negative~ : Bool)
+  NaN
+  Sequence
+  Dictionary
+}
+impl Show for Value
+
+// Type aliases
+pub typealias @list.List[Definition] as Definitions
+
+pub typealias @list.List[ExtAttr] as ExtAttrs
+
+pub typealias String as Id
+
+// Traits
+

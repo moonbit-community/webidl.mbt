@@ -1,0 +1,12 @@
+{
+  "name": "Yoorkin/webidl",
+  "version": "0.1.0",
+  "readme": "README.md",
+  "repository": "",
+  "license": "Apache-2.0",
+  "keywords": [],
+  "description": "",
+  "bin-deps": {
+    "moonbitlang/yacc": "0.6.12"
+  }
+}

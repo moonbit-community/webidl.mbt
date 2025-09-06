@@ -1,0 +1,791 @@
+%derive<Show> Token
+%derive<Eq> TokenKind
+%start definitions
+
+%token<String> INT
+%token<String> ID
+%token<String> STRING
+%token<String> DECIMAL
+%token ATTRIBUTE "attribute"
+%token CALLBACK "callback"
+%token CONST "const"
+%token CONSTRUCTOR "constructor"
+%token DELETER "deleter"
+%token DICTIONARY "dictionary"
+%token ENUM "enum"
+%token GETTER "getter"
+%token INCLUDES "includes"
+%token INHERIT "inherit"
+%token INTERFACE "interface"
+%token ITERABLE "iterable"
+%token MAPLIKE "maplike"
+%token MIXIN "mixin"
+%token NAMESPACE "namespace"
+%token PARTIAL "partial"
+%token READONLY "readonly"
+%token REQUIRED "required"
+%token SETLIKE "setlike"
+%token SETTER "setter"
+%token STATIC "static"
+%token STRINGIFIER "stringifier"
+%token TYPEDEF "typedef"
+%token UNRESTRICTED "unrestricted"
+%token ARRAYBUFFER "ArrayBuffer"
+%token SHAREDARRAYBUFFER "SharedArrayBuffer"
+%token DATAVIEW "DataView"
+%token INT8ARRAY "Int8Array"
+%token INT16ARRAY "Int16Array"
+%token INT32ARRAY "Int32Array"
+%token UINT8ARRAY "Uint8Array"
+%token UINT16ARRAY "Uint16Array"
+%token UINT32ARRAY "Uint32Array"
+%token UINT8CLAMPEDARRAY "Uint8ClampedArray"
+%token BIGINT64ARRAY "BigInt64Array"
+%token BIGUINT64ARRAY "BigUint64Array"
+%token FLOAT16ARRAY "Float16Array"
+%token FLOAT32ARRAY "Float32Array"
+%token FLOAT64ARRAY "Float64Array"
+%token BYTESTRING "ByteString"
+%token DOMSTRING "DOMString"
+%token USVSTRING "USVString"
+%token FROZENARRAY "FrozenArray"
+%token INFINITY "Infinity"
+%token NEGINFINITY "-Infinity"
+%token NAN "NaN"
+%token OBSERVABLEARRAY "ObservableArray"
+%token PROMISE "Promise"
+%token ANY "any"
+%token BIGINT "bigint"
+%token BOOLEAN "boolean"
+%token BYTE "byte"
+%token DOUBLE "double"
+%token FLOAT "float"
+%token LONG "long"
+%token OBJECT "object"
+%token OCTET "octet"
+%token RECORD "record"
+%token SEQUENCE "sequence"
+%token SHORT "short"
+%token SYMBOL "symbol"
+%token UNSIGNED "unsigned"
+%token ASYNCITERABLE "async_iterable"
+%token ASYNCSEQUENCE "async_sequence"
+
+
+%token FALSE "false"
+%token TRUE "true"
+%token NULL "null"
+%token UNDEFINED "undefined"
+%token MINUS "-"
+%token DOT "."
+%token ELLIPS "..."
+%token COLON ":"
+%token SEMI ";"
+%token LT "<"
+%token EQUAL "="
+%token GT ">"
+%token QUESTION "?"
+%token STAR "*"
+%token OR "or"
+%token OPTIONAL "optional"
+
+
+%token LBRACE "{"
+%token RBRACE "}"
+%token LPAREN "("
+%token RPAREN ")"
+%token LBRACKET "["
+%token RBRACKET "]"
+%token COMMA ","
+
+
+
+%token EOF
+
+%%
+
+
+definitions -> List[Definition]
+  : extendedAttributeList definition definitions { $3.add($2.set_attrs($1)) }
+  | EOF                                          { @list.empty() }
+  ;
+
+definition -> Definition
+  : callbackOrInterfaceOrMixin { $1 }
+  | namespace                  { Namespace($1) }
+  | partial                    { $1 }
+  | dictionary                 { Dictionary($1) }
+  | enum_                      { Enum($1) }
+  | typedef                    { Typedef($1) }
+  | includesStatement          { Includes($1) }
+  ;
+
+argumentNameKeyword -> String
+  : "attribute"    { "attribute" }
+  | "callback"     { "callback" }
+  | "const"        { "const" }
+  | "constructor"  { "constructor" }
+  | "deleter"      { "deleter" }
+  | "dictionary"   { "dictionary" }
+  | "enum"         { "enum" }
+  | "getter"       { "getter" }
+  | "includes"     { "includes" }
+  | "inherit"      { "inherit" }
+  | "interface"    { "interface" }
+  | "iterable"     { "iterable" }
+  | "maplike"      { "maplike" }
+  | "mixin"        { "mixin" }
+  | "namespace"    { "namespace" }
+  | "partial"      { "partial" }
+  | "readonly"     { "readonly" }
+  | "required"     { "required" }
+  | "setlike"      { "setlike" }
+  | "setter"       { "setter" }
+  | "static"       { "static" }
+  | "stringifier"  { "stringifier" }
+  | "typedef"      { "typedef" }
+  | "unrestricted" { "unrestricted" }
+  ;
+
+callbackOrInterfaceOrMixin -> Definition
+  : "callback" callbackRestOrInterface { $2 }
+  | "interface" interfaceOrMixin { $2 }
+  ;
+
+interfaceOrMixin -> Definition
+  : interfaceRest { Interface($1) }
+  | mixinRest     { InterfaceMixin($1) }
+  ;
+
+interfaceRest -> Interface
+  : ID inheritance "{" interfaceMembers "}" ";" { 
+      { name: $1, inherit: $2, members: $4, partial: false, attrs: @list.empty() } 
+    }
+  ;
+
+partial -> Definition
+  : "partial" partialDefinition { $2 }
+  ;
+
+partialDefinition -> Definition
+  : "interface" partialInterfaceOrPartialMixin { $2 }
+  | partialDictionary { Dictionary($1) }
+  | namespace { Namespace($1) }
+  ;
+
+partialInterfaceOrPartialMixin -> Definition
+  : partialInterfaceRest { Interface($1) }
+  | mixinRest            { InterfaceMixin({ ..$1, partial: true }) }
+  ;
+
+partialInterfaceRest -> Interface
+  : ID "{" partialInterfaceMembers "}" ";" { 
+      { name: $1, partial: true, members: $3, inherit: None, attrs: @list.empty() } 
+    }
+  ;
+
+interfaceMembers -> List[Member]
+  : extendedAttributeList interfaceMember interfaceMembers { $3.add($2.set_attrs($1)) }
+  |                                                        { @list.empty() }
+  ;
+
+interfaceMember -> Member
+  : partialInterfaceMember { $1 }
+  | constructor            { Constructor($1) }
+  ;
+
+partialInterfaceMembers -> List[Member]
+  : extendedAttributeList partialInterfaceMember partialInterfaceMembers { 
+      $3.add($2.set_attrs($1)) 
+    }
+  | { @list.empty() }
+  ;
+
+partialInterfaceMember -> Member
+  : const_             { Const($1) }
+  | operation          { Operation($1) }
+  | stringifier        { $1 }
+  | staticMember       { $1 }
+  | iterable           { Iterable($1) }
+  | asyncIterable      { Iterable($1) }
+  | readOnlyMember     { $1 }
+  | readWriteAttribute { Attribute($1) }
+  | readWriteMaplike   { MapLike($1) }
+  | readWriteSetlike   { SetLike($1) }
+  | inheritAttribute   { Attribute($1) }
+  ;
+
+inheritance -> Id?
+  : ":" ID { Some($2) }
+  |        { None }
+  ;
+
+mixinRest -> InterfaceMixin
+  : "mixin" ID "{" mixinMembers "}" ";" { 
+      { name: $2, members: $4, partial: false, attrs: @list.empty() } 
+    }
+  ;
+
+mixinMembers -> List[Member]
+  : extendedAttributeList mixinMember mixinMembers { $3.add($2.set_attrs($1)) }
+  |                                                { @list.empty() }
+  ;
+
+mixinMember -> Member
+  : const_                         { Const($1) }
+  | regularOperation               { Operation($1) }
+  | stringifier                    { $1 }
+  | optionalReadOnly attributeRest { Attribute({ ..$2, readonly_: $1 }) }
+  ;
+
+includesStatement -> Includes
+  : ID "includes" ID ";" { { target: $1, includes: $3, attrs: @list.empty() } }
+  ;
+
+callbackRestOrInterface -> Definition 
+  : callbackRest                                        { Callback($1) }
+  | "interface" ID "{" callbackInterfaceMembers "}" ";" { 
+      Interface({ name: $2, members: $4, partial: false, inherit: None, attrs: @list.empty() }) 
+    }
+  ;
+
+callbackInterfaceMembers -> List[Member]
+  : extendedAttributeList callbackInterfaceMember callbackInterfaceMembers { 
+      $3.add($2.set_attrs($1)) 
+    }
+  | { @list.empty() }
+  ;
+
+callbackInterfaceMember -> Member
+  : const_           { Const($1) }
+  | regularOperation { Operation($1) }
+  ;
+
+const_ -> Const
+  : "const" constType ID "=" constValue ";" { 
+      { name: $3, idl_type: $2, value: $5, attrs: @list.empty() } 
+    }
+  ;
+
+constValue -> Value
+  : booleanLiteral { Boolean($1) }
+  | floatLiteral   { $1 }
+  | INT            { Number($1) }
+  ;
+
+booleanLiteral -> Bool
+  : "true" { true }
+  | "false" { false }
+  ;
+
+floatLiteral -> Value
+  : DECIMAL     { Decimal($1) }
+  | "-Infinity" { Infinity(negative=true) }
+  | "Infinity"  { Infinity(negative=false) }
+  | "NaN"       { NaN }
+  ;
+
+constType -> IDLType
+  : primitiveType { $1 }
+  | ID            { Id($1) }
+  ;
+
+readOnlyMember -> Member
+  : "readonly" readOnlyMemberRest { $2.set_readonly(true) }
+  ;
+
+readOnlyMemberRest -> Member
+  : attributeRest { Attribute($1) }
+  | maplikeRest   { MapLike($1) }
+  | setlikeRest   { SetLike($1) }
+  ;
+
+readWriteAttribute -> Attribute
+  : attributeRest { $1 }
+  ;
+
+inheritAttribute -> Attribute
+  : "inherit" attributeRest { { ..$2, special: Inherit } }
+  ;
+
+attributeRest -> Attribute
+  : "attribute" typeWithExtendedAttributes attributeName ";" { 
+      { name: $3, special: Regular, readonly_: false, idl_type: $2, attrs: @list.empty() } 
+    }
+  ;
+
+attributeName -> String
+  : attributeNameKeyword { $1 }
+  | ID                   { $1 }
+  ;
+
+attributeNameKeyword -> String
+  : "required" { "required" }
+  ;
+
+optionalReadOnly -> Bool
+  : "readonly" { true }
+  |            { false }
+  ;
+
+defaultValue -> Value
+  : constValue  { $1 }
+  | STRING      { String($1) }
+  | "[" "]"     { Sequence }
+  | "{" "}"     { Dictionary }
+  | "null"      { Null }
+  | "undefined" { Undefined }
+  ;
+
+operation -> Operation
+  : regularOperation { $1 }
+  | specialOperation { $1 }
+  ;
+
+regularOperation -> Operation
+  : type_ operationRest { { ..$2, idl_type: Some($1) } }
+  ;
+
+specialOperation -> Operation
+  : special regularOperation { { ..$2, special: $1 } }
+  ;
+
+special -> OperationKind
+  : "getter"  { Getter }
+  | "setter"  { Setter }
+  | "deleter" { Deleter }
+  ;
+
+operationRest -> Operation
+  : optionalOperationName "(" argumentList ")" ";" { 
+      { special: Regular, idl_type: None, name: $1, arguments: $3, attrs: @list.empty() }
+    }
+  ;
+
+optionalOperationName -> String?
+  : operationName { Some($1) }
+  |               { None }
+  ;
+
+operationName -> String
+  : operationNameKeyword { $1 }
+  | ID                   { $1 }
+  ;
+
+operationNameKeyword -> String
+  : "includes" { "includes" }
+  ;
+
+argumentList -> List[Argument]
+  : argument arguments { $2.add($1) }
+  |                    { @list.empty() }
+  ;
+
+arguments -> List[Argument]
+  : "," argument arguments { $3.add($2) }
+  |                        { @list.empty() }
+  ;
+
+argument -> Argument
+  : extendedAttributeList argumentRest { { ..$2, attrs: $1 } }
+  ;
+
+argumentRest -> Argument
+  : "optional" typeWithExtendedAttributes argumentName default { 
+      { name: $3, idl_type: $2, default: $4, optional: true, variadic: false, attrs: @list.empty() } 
+    }
+  | type_ ellipsis argumentName { 
+      { name: $3, idl_type: make_with_attrs($1), default: None, optional: false, variadic: true, attrs: @list.empty() }  
+    }
+  ;
+
+argumentName -> Id
+  : argumentNameKeyword { $1 }
+  | ID                  { $1 }
+  ;
+
+ellipsis
+  : "..." {}
+  |       {}
+  ;
+
+constructor -> Constructor
+  : "constructor" "(" argumentList ")" ";" { { arguments: $3, attrs: @list.empty() } }
+  ;
+
+stringifier -> Member
+  : "stringifier" stringifierRest { $2 }
+  ;
+
+stringifierRest -> Member
+  : optionalReadOnly attributeRest { Attribute({ ..$2, readonly_: $1 }) }
+  | ";" { 
+      Operation({ 
+        special: Stringifier, 
+        idl_type: None, 
+        name: None, 
+        arguments: @list.empty(), 
+        attrs: @list.empty(),
+      }) 
+    }
+  ;
+
+staticMember -> Member
+  : "static" staticMemberRest { $2.set_static() }
+  ;
+
+staticMemberRest -> Member
+  : optionalReadOnly attributeRest { Attribute({ ..$2, readonly_: $1 }) }
+  | regularOperation               { Operation($1) }
+  ;
+
+iterable -> Iterable
+  : "iterable" "<" typeWithExtendedAttributes optionalType ">" ";" { 
+      { idl_type: $3, async_: false, opt_type: $4, attrs: @list.empty() } 
+    }
+  ;
+
+optionalType -> IDLTypeWithExtAttr?
+  : "," typeWithExtendedAttributes { Some($2) }
+  | { None }
+  ;
+
+asyncIterable -> Iterable
+  : "async_iterable" "<" typeWithExtendedAttributes optionalType ">" optionalArgumentList ";" { panic() }
+  ;
+
+optionalArgumentList -> List[Argument]?
+  : "(" argumentList ")" { Some($2) }
+  |                      { None }
+  ;
+
+readWriteMaplike -> MapLike
+  : maplikeRest { $1 }
+  ;
+
+maplikeRest -> MapLike
+  : "maplike" "<" typeWithExtendedAttributes "," typeWithExtendedAttributes ">" ";" { 
+      { idl_type: $3, readonly_: false, attrs: @list.empty() }  
+    }
+  ;
+
+readWriteSetlike -> SetLike
+  : setlikeRest { $1 }
+  ;
+
+setlikeRest -> SetLike
+  : "setlike" "<" typeWithExtendedAttributes ">" ";" { 
+      { idl_type: $3, readonly_: false, attrs: @list.empty() }
+    }
+  ;
+
+namespace -> Namespace
+  : "namespace" ID "{" namespaceMembers "}" ";" { 
+      { name: $2, partial: false, members: $4, attrs: @list.empty() } 
+    }
+  ;
+
+namespaceMembers -> List[Member]
+  : extendedAttributeList namespaceMember namespaceMembers { $3.add($2.set_attrs($1)) }
+  |                                                        { @list.empty() }
+  ;
+
+namespaceMember -> Member
+  : regularOperation         { Operation($1) }
+  | "readonly" attributeRest { Attribute({ ..$2, readonly_: true }) }
+  | const_                   { Const($1) }
+  ;
+
+dictionary -> Dictionary
+  : "dictionary" ID inheritance "{" dictionaryMembers "}" ";" { 
+      { name: $2, inherit: $3, members: $5, attrs: @list.empty(), partial: false } 
+    }
+  ;
+
+dictionaryMembers -> List[DictionaryField]
+  : dictionaryMember dictionaryMembers { $2.add($1) }
+  |                                    { @list.empty() }
+  ;
+
+dictionaryMember -> DictionaryField
+  : extendedAttributeList dictionaryMemberRest { { ..$2, attrs: $1 } }
+  ;
+
+dictionaryMemberRest -> DictionaryField
+  : "required" typeWithExtendedAttributes ID ";" { 
+      { name: $3, required: true, idl_type: $2, default: None, attrs: @list.empty() } 
+    }
+  | type_ ID default ";" { 
+      { name: $2, required: false, idl_type: make_with_attrs($1), default: $3, attrs: @list.empty() } 
+    }
+  ;
+
+partialDictionary -> Dictionary
+  : "dictionary" ID "{" dictionaryMembers "}" ";" { 
+      { name: $2, members: $4, inherit: None, partial: false, attrs: @list.empty() } 
+    }
+  ;
+
+default -> Value?
+  : "=" defaultValue { Some($2) }
+  |                  { None }
+  ;
+
+enum_ -> Enum
+  : "enum" ID "{" enumValueList "}" ";" { { name: $2, values: $4, attrs: @list.empty() } }
+  ;
+
+enumValueList -> List[String]
+  : STRING enumValueListComma { $2.add($1) }
+  ;
+
+enumValueListComma -> List[String]
+  : "," enumValueListString  { $2 }
+  |                          { @list.empty() }
+  ;
+
+enumValueListString -> List[String]
+  : STRING enumValueListComma { $2.add($1) }
+  |                           { @list.empty() } 
+  ;
+
+callbackRest -> Callback
+  : ID "=" type_ "(" argumentList ")" ";" { { name: $1, idl_type: $3, arguments: $5, attrs: @list.empty() } }
+  ;
+
+typedef -> Typedef
+  : "typedef" typeWithExtendedAttributes ID ";" { { name: $3, idl_type: $2, attrs: @list.empty() } }
+  ;
+
+type_ -> IDLType 
+  : singleType      { $1 }
+  | unionType null_ { make_nullable($2, $1) }
+  ;
+
+typeWithExtendedAttributes -> IDLTypeWithExtAttr
+  : extendedAttributeList type_ { { attrs: $1, ty: $2 } }
+  ;
+
+singleType -> IDLType
+  : distinguishableType { $1 }
+  | "any"               { Any }
+  | promiseType         { $1 }
+  ;
+
+unionType -> IDLType
+  : "(" unionMemberType "or" unionMemberType unionMemberTypes ")" { 
+    Union($5.add($4).add($2)) 
+  }
+  ;
+
+unionMemberType -> IDLTypeWithExtAttr
+  : extendedAttributeList distinguishableType { { attrs: $1, ty: $2 } }
+  | unionType null_ { 
+    let ty = if $2 { IDLType::Nullable($1) } else { $1 }
+    { attrs: @list.empty(), ty }
+  }
+  ;
+
+unionMemberTypes -> List[IDLTypeWithExtAttr]
+  : "or" unionMemberType unionMemberTypes { $3.add($2) }
+  | { @list.empty() }
+  ;
+
+distinguishableType -> IDLType
+  : primitiveType null_                                        { make_nullable($2, $1) }
+  | stringType null_                                           { make_nullable($2, String($1)) }
+  | ID null_                                                   { make_nullable($2, Id($1)) }
+  | "sequence" "<" typeWithExtendedAttributes ">" null_        { make_nullable($5, Sequence($3)) }
+  | "async_sequence" "<" typeWithExtendedAttributes ">" null_  { make_nullable($5, AsyncSequence($3)) }
+  | "object" null_                                             { make_nullable($2, Object) }
+  | "symbol" null_                                             { make_nullable($2, Symbol) }
+  | bufferRelatedType null_                                    { make_nullable($2, $1) }
+  | "FrozenArray" "<" typeWithExtendedAttributes ">" null_     { make_nullable($5, FrozenArray($3)) }
+  | "ObservableArray" "<" typeWithExtendedAttributes ">" null_ { make_nullable($5, ObservableArray($3)) }
+  | recordType null_                                           { make_nullable($2, $1) }
+  | "undefined" null_                                          { make_nullable($2, Undefined) }
+  ;
+
+primitiveType -> IDLType
+  : unsignedIntegerType   { Integer($1) }
+  | unrestrictedFloatType { Floating($1) }
+  | "boolean"             { Boolean }
+  | "byte"                { Byte }
+  | "octet"               { Octet }
+  | "bigint"              { Bigint }
+  ;
+
+unrestrictedFloatType -> FloatingType
+  : "unrestricted" floatType { Unrestricted($2) }
+  | floatType                { $1 }
+  ;
+
+
+floatType -> FloatingType
+  : "float"  { Float }
+  | "double" { Double }
+  ;
+
+unsignedIntegerType -> IntegerType 
+  : "unsigned" integerType { Unsigned($2) }
+  | integerType            { $1 }
+  ;
+
+integerType -> IntegerType 
+  : "short"             { Short }
+  | "long" optionalLong { if $2 { LongLong } else { Long } }
+  ;
+
+optionalLong -> Bool
+  : "long" { true }
+  |        { false }
+  ;
+
+stringType -> StringType
+  : "ByteString" { ByteString }
+  | "DOMString"  { DOMString }
+  | "USVString"  { USVString }
+  ;
+
+promiseType -> IDLType
+  : "Promise" "<" type_ ">" { Promise($3) }
+  ;
+
+recordType -> IDLType
+  : "record" "<" stringType "," typeWithExtendedAttributes ">" { Record($3,$5) }
+  ;
+
+null_ -> Bool
+  : "?" { true }
+  |     { false }
+  ;
+
+bufferRelatedType -> IDLType
+  : "ArrayBuffer"       { ArrayBuffer }
+  | "SharedArrayBuffer" { SharedArrayBuffer }
+  | "DataView"          { DataView }
+  | "Int8Array"         { Int8Array }
+  | "Int16Array"        { Int16Array }
+  | "Int32Array"        { Int32Array }
+  | "Uint8Array"        { Uint8Array }
+  | "Uint16Array"       { Uint16Array }
+  | "Uint32Array"       { Uint32Array }
+  | "Uint8ClampedArray" { Uint8ClampedArray }
+  | "BigInt64Array"     { BigInt64Array }
+  | "BigUint64Array"    { BigUint64Array }
+  | "Float16Array"      { Float16Array }
+  | "Float32Array"      { Float32Array }
+  | "Float64Array"      { Float64Array }
+  ;
+
+extendedAttributeList -> ExtAttrs
+  : "[" extendedAttribute extendedAttributes "]" { @list.empty() }
+  |                                              { @list.empty() }
+  ;
+
+extendedAttributes -> ExtAttrs
+  : "," extendedAttribute extendedAttributes { @list.empty() }
+  |                                          { @list.empty() }
+  ;
+
+extendedAttribute -> Unit
+  : "(" extendedAttributeInner ")" extendedAttributeRest {}
+  | "[" extendedAttributeInner "]" extendedAttributeRest {}
+  | "{" extendedAttributeInner "}" extendedAttributeRest {}
+  | other extendedAttributeRest {}
+  ;
+
+extendedAttributeRest
+  : extendedAttribute {}
+  |                   {}
+  ;
+
+extendedAttributeInner
+  : "(" extendedAttributeInner ")" extendedAttributeInner {}
+  | "[" extendedAttributeInner "]" extendedAttributeInner {}
+  | "{" extendedAttributeInner "}" extendedAttributeInner {}
+  | otherOrComma extendedAttributeInner                   {}
+  |                                                       {}
+  ;
+
+other -> Unit
+  : INT               {}
+  | DECIMAL           {}
+  | ID                {}
+  | STRING            {}
+  | "-"               {}
+  | "-Infinity"       {}
+  | "."               {}
+  | "..."             {}
+  | ":"               {}
+  | ";"               {}
+  | "<"               {}
+  | "="               {}
+  | ">"               {}
+  | "?"               {}
+  | "*"               {}
+  | "ByteString"      {}
+  | "DOMString"       {}
+  | "FrozenArray"     {}
+  | "Infinity"        {}
+  | "NaN"             {}
+  | "ObservableArray" {}
+  | "Promise"         {}
+  | "USVString"       {}
+  | "any"             {}
+  | "bigint"          {}
+  | "boolean"         {}
+  | "byte"            {}
+  | "double"          {}
+  | "false"           {}
+  | "float"           {}
+  | "long"            {}
+  | "null"            {}
+  | "object"          {}
+  | "octet"           {}
+  | "or"              {}
+  | "optional"        {}
+  | "record"          {}
+  | "sequence"        {}
+  | "short"           {}
+  | "symbol"          {}
+  | "true"            {}
+  | "unsigned"        {}
+  | "undefined"       {}
+  | argumentNameKeyword {}
+  | bufferRelatedType   {}
+  ;
+
+
+otherOrComma: other { panic() } | "," { panic() };
+
+identifierList: ID identifiers { panic() };
+
+identifiers: "," ID identifiers { panic() } | { panic() };
+
+integerList: INT integers { panic() };
+
+integers: "," INT integers { panic() } | { panic() };
+
+extendedAttributeNoArgs: ID { panic() };
+
+extendedAttributeArgList: ID "(" argumentList ")" { panic() };
+
+extendedAttributeIdent: ID "=" ID { panic() };
+
+extendedAttributeString: ID "=" STRING { panic() };
+
+extendedAttributeInteger: ID "=" INT { panic() };
+
+extendedAttributeDecimal: ID "=" DECIMAL { panic() };
+
+extendAttributeWildcard: ID "=" "*" { panic() };
+
+extendedAttributeIdentList: ID "=" "(" identifierList ")" { panic() };
+
+extendedAttributeIntegerList: ID "=" "(" integerList ")" { panic() };
+
+extendedAttributeNamedArgList: ID "=" ID "(" argumentList ")" { panic() };
+
+
+
