@@ -33,7 +33,7 @@ pub(all) struct Interface {
   name : Id
   partial : Bool
   members : List[Member]
-  inherit : Id?
+  inheritance : Id?
   attrs : ExtAttrs
 } derive(Show)
 
@@ -66,7 +66,7 @@ pub(all) struct Dictionary {
   name : Id
   partial : Bool
   members : List[DictionaryField]
-  inherit : Id?
+  inheritance : Id?
   attrs : ExtAttrs
 } derive(Show)
 

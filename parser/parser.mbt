@@ -265,7 +265,7 @@ priv enum YYSymbol {
   NT_interfaceMember
   NT_partialInterfaceMembers
   NT_partialInterfaceMember
-  NT_inheritance
+  NT_inheritanceance
   NT_mixinRest
   NT_mixinMembers
   NT_mixinMember
@@ -281,7 +281,7 @@ priv enum YYSymbol {
   NT_readOnlyMember
   NT_readOnlyMemberRest
   NT_readWriteAttribute
-  NT_inheritAttribute
+  NT_inheritanceAttribute
   NT_attributeRest
   NT_attributeName
   NT_attributeNameKeyword
@@ -551,7 +551,7 @@ fn yy_action_9(
 
 // file:///./parser.mbty
 // 247|    "interface" ID "{" callbackInterfaceMembers "}" ";" { 
-// 248|      Interface({ name: $2, members: $4, partial: false, inherit: None, attrs: @list.empty() }) 
+// 248|      Interface({ name: $2, members: $4, partial: false, inheritance: None, attrs: @list.empty() }) 
 // 249|    }
 
 ///|
@@ -568,7 +568,7 @@ fn yy_action_10(
         name: _dollar2,
         members: _dollar4,
         partial: false,
-        inherit: None,
+        inheritance: None,
         attrs: @list.empty(),
       })
     },
@@ -722,8 +722,8 @@ fn yy_action_18(
 }
 
 // file:///./parser.mbty
-// 161|    ID inheritance "{" interfaceMembers "}" ";" { 
-// 162|      { name: $1, inherit: $2, members: $4, partial: false, attrs: @list.empty() } 
+// 161|    ID inheritanceance "{" interfaceMembers "}" ";" { 
+// 162|      { name: $1, inheritance: $2, members: $4, partial: false, attrs: @list.empty() } 
 // 163|    }
 
 ///|
@@ -739,7 +739,7 @@ fn yy_action_19(
       ()
       {
         name: _dollar1,
-        inherit: _dollar2,
+        inheritance: _dollar2,
         members: _dollar4,
         partial: false,
         attrs: @list.empty(),
@@ -904,7 +904,7 @@ fn yy_action_28(
 
 // file:///./parser.mbty
 // 182|    ID "{" partialInterfaceMembers "}" ";" { 
-// 183|      { name: $1, partial: true, members: $3, inherit: None, attrs: @list.empty() } 
+// 183|      { name: $1, partial: true, members: $3, inheritance: None, attrs: @list.empty() } 
 // 184|    }
 
 ///|
@@ -921,7 +921,7 @@ fn yy_action_29(
         name: _dollar1,
         partial: true,
         members: _dollar3,
-        inherit: None,
+        inheritance: None,
         attrs: @list.empty(),
       }
     },
@@ -1120,7 +1120,7 @@ fn yy_action_40(
 }
 
 // file:///./parser.mbty
-// 215|    inheritAttribute   { Attribute($1) }
+// 215|    inheritanceAttribute   { Attribute($1) }
 
 ///|
 fn yy_action_41(
@@ -1222,7 +1222,7 @@ fn yy_action_46(
 }
 
 // file:///./parser.mbty
-// 308|    "inherit" attributeRest { { ..$2, special: Inherit } }
+// 308|    "inheritance" attributeRest { { ..$2, special: Inherit } }
 
 ///|
 fn yy_action_47(
@@ -1847,7 +1847,7 @@ fn yy_action_81(
 
 // file:///./parser.mbty
 // 524|    "dictionary" ID "{" dictionaryMembers "}" ";" { 
-// 525|      { name: $2, members: $4, inherit: None, partial: false, attrs: @list.empty() } 
+// 525|      { name: $2, members: $4, inheritance: None, partial: false, attrs: @list.empty() } 
 // 526|    }
 
 ///|
@@ -1863,7 +1863,7 @@ fn yy_action_82(
       {
         name: _dollar2,
         members: _dollar4,
-        inherit: None,
+        inheritance: None,
         partial: false,
         attrs: @list.empty(),
       }
@@ -2281,8 +2281,8 @@ fn yy_action_104(
 }
 
 // file:///./parser.mbty
-// 500|    "dictionary" ID inheritance "{" dictionaryMembers "}" ";" { 
-// 501|      { name: $2, inherit: $3, members: $5, attrs: @list.empty(), partial: false } 
+// 500|    "dictionary" ID inheritanceance "{" dictionaryMembers "}" ";" { 
+// 501|      { name: $2, inheritance: $3, members: $5, attrs: @list.empty(), partial: false } 
 // 502|    }
 
 ///|
@@ -2298,7 +2298,7 @@ fn yy_action_105(
       ()
       {
         name: _dollar2,
-        inherit: _dollar3,
+        inheritance: _dollar3,
         members: _dollar5,
         attrs: @list.empty(),
         partial: false,
@@ -3327,7 +3327,7 @@ fn yy_action_164(
 }
 
 // file:///./parser.mbty
-// 133|    "inherit"      { "inherit" }
+// 133|    "inheritance"      { "inheritance" }
 
 ///|
 fn yy_action_165(
@@ -3337,7 +3337,7 @@ fn yy_action_165(
   YYObj_String(
     {
       ()
-      "inherit"
+      "inheritance"
     },
   )
 }
@@ -7903,9 +7903,9 @@ fn yy_state_229(_lookahead : YYSymbol) -> YYDecision {
 ///|
 fn yy_state_230(_lookahead : YYSymbol) -> YYDecision {
   match _lookahead {
-    NT_inheritance => Shift(yy_state_231)
+    NT_inheritanceance => Shift(yy_state_231)
     T_COLON => Shift(yy_state_248)
-    T_LBRACE => Reduce(0, NT_inheritance, yy_action_111)
+    T_LBRACE => Reduce(0, NT_inheritanceance, yy_action_111)
     _ => Error
   }
 }
@@ -8229,7 +8229,7 @@ fn yy_state_248(_lookahead : YYSymbol) -> YYDecision {
 
 ///|
 fn yy_state_249(_lookahead : YYSymbol) -> YYDecision {
-  ReduceNoLookahead(2, NT_inheritance, yy_action_104)
+  ReduceNoLookahead(2, NT_inheritanceance, yy_action_104)
 }
 
 ///|
@@ -9351,7 +9351,7 @@ fn yy_state_325(_lookahead : YYSymbol) -> YYDecision {
     T_INHERIT => Shift(yy_state_370)
     NT_attributeRest => Shift(yy_state_372)
     T_READONLY => Shift(yy_state_373)
-    NT_inheritAttribute => Shift(yy_state_378)
+    NT_inheritanceAttribute => Shift(yy_state_378)
     NT_readWriteSetlike => Shift(yy_state_379)
     NT_readWriteMaplike => Shift(yy_state_380)
     NT_readWriteAttribute => Shift(yy_state_381)
@@ -10093,7 +10093,7 @@ fn yy_state_370(_lookahead : YYSymbol) -> YYDecision {
 
 ///|
 fn yy_state_371(_lookahead : YYSymbol) -> YYDecision {
-  ReduceNoLookahead(2, NT_inheritAttribute, yy_action_47)
+  ReduceNoLookahead(2, NT_inheritanceAttribute, yy_action_47)
 }
 
 ///|
@@ -10316,8 +10316,8 @@ fn yy_state_398(_lookahead : YYSymbol) -> YYDecision {
 fn yy_state_399(_lookahead : YYSymbol) -> YYDecision {
   match _lookahead {
     T_COLON => Shift(yy_state_248)
-    NT_inheritance => Shift(yy_state_400)
-    T_LBRACE => Reduce(0, NT_inheritance, yy_action_111)
+    NT_inheritanceance => Shift(yy_state_400)
+    T_LBRACE => Reduce(0, NT_inheritanceance, yy_action_111)
     _ => Error
   }
 }
@@ -10470,7 +10470,7 @@ fn yy_state_402(_lookahead : YYSymbol) -> YYDecision {
     T_INHERIT => Shift(yy_state_370)
     NT_attributeRest => Shift(yy_state_372)
     T_READONLY => Shift(yy_state_373)
-    NT_inheritAttribute => Shift(yy_state_378)
+    NT_inheritanceAttribute => Shift(yy_state_378)
     NT_readWriteSetlike => Shift(yy_state_379)
     NT_readWriteMaplike => Shift(yy_state_380)
     NT_readWriteAttribute => Shift(yy_state_381)

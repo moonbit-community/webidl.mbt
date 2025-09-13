@@ -83,7 +83,7 @@ pub(all) struct Dictionary {
   name : String
   partial : Bool
   members : @list.List[DictionaryField]
-  inherit : String?
+  inheritance : String?
   attrs : @list.List[ExtAttr]
 }
 impl Show for Dictionary
@@ -182,7 +182,7 @@ pub(all) struct Interface {
   name : String
   partial : Bool
   members : @list.List[Member]
-  inherit : String?
+  inheritance : String?
   attrs : @list.List[ExtAttr]
 }
 impl Show for Interface

@@ -305,7 +305,7 @@ pub impl Show for TokenKind with output(self, logger) {
       TK_ENUM => "\"enum\""
       TK_GETTER => "\"getter\""
       TK_INCLUDES => "\"includes\""
-      TK_INHERIT => "\"inherit\""
+      TK_INHERIT => "\"inheritance\""
       TK_INTERFACE => "\"interface\""
       TK_ITERABLE => "\"iterable\""
       TK_MAPLIKE => "\"maplike\""

@@ -15,7 +15,7 @@
 %token ENUM "enum"
 %token GETTER "getter"
 %token INCLUDES "includes"
-%token INHERIT "inherit"
+%token INHERIT "inheritance"
 %token INTERFACE "interface"
 %token ITERABLE "iterable"
 %token MAPLIKE "maplike"
@@ -130,7 +130,7 @@ argumentNameKeyword -> String
   | "enum"         { "enum" }
   | "getter"       { "getter" }
   | "includes"     { "includes" }
-  | "inherit"      { "inherit" }
+  | "inheritance"      { "inheritance" }
   | "interface"    { "interface" }
   | "iterable"     { "iterable" }
   | "maplike"      { "maplike" }
@@ -158,8 +158,8 @@ interfaceOrMixin -> Definition
   ;
 
 interfaceRest -> Interface
-  : ID inheritance "{" interfaceMembers "}" ";" { 
-      { name: $1, inherit: $2, members: $4, partial: false, attrs: @list.empty() } 
+  : ID inheritanceance "{" interfaceMembers "}" ";" { 
+      { name: $1, inheritance: $2, members: $4, partial: false, attrs: @list.empty() } 
     }
   ;
 
@@ -180,7 +180,7 @@ partialInterfaceOrPartialMixin -> Definition
 
 partialInterfaceRest -> Interface
   : ID "{" partialInterfaceMembers "}" ";" { 
-      { name: $1, partial: true, members: $3, inherit: None, attrs: @list.empty() } 
+      { name: $1, partial: true, members: $3, inheritance: None, attrs: @list.empty() } 
     }
   ;
 
@@ -212,10 +212,10 @@ partialInterfaceMember -> Member
   | readWriteAttribute { Attribute($1) }
   | readWriteMaplike   { MapLike($1) }
   | readWriteSetlike   { SetLike($1) }
-  | inheritAttribute   { Attribute($1) }
+  | inheritanceAttribute   { Attribute($1) }
   ;
 
-inheritance -> Id?
+inheritanceance -> Id?
   : ":" ID { Some($2) }
   |        { None }
   ;
@@ -245,7 +245,7 @@ includesStatement -> Includes
 callbackRestOrInterface -> Definition 
   : callbackRest                                        { Callback($1) }
   | "interface" ID "{" callbackInterfaceMembers "}" ";" { 
-      Interface({ name: $2, members: $4, partial: false, inherit: None, attrs: @list.empty() }) 
+      Interface({ name: $2, members: $4, partial: false, inheritance: None, attrs: @list.empty() }) 
     }
   ;
 
@@ -304,8 +304,8 @@ readWriteAttribute -> Attribute
   : attributeRest { $1 }
   ;
 
-inheritAttribute -> Attribute
-  : "inherit" attributeRest { { ..$2, special: Inherit } }
+inheritanceAttribute -> Attribute
+  : "inheritance" attributeRest { { ..$2, special: Inherit } }
   ;
 
 attributeRest -> Attribute
@@ -497,8 +497,8 @@ namespaceMember -> Member
   ;
 
 dictionary -> Dictionary
-  : "dictionary" ID inheritance "{" dictionaryMembers "}" ";" { 
-      { name: $2, inherit: $3, members: $5, attrs: @list.empty(), partial: false } 
+  : "dictionary" ID inheritanceance "{" dictionaryMembers "}" ";" { 
+      { name: $2, inheritance: $3, members: $5, attrs: @list.empty(), partial: false } 
     }
   ;
 
@@ -522,7 +522,7 @@ dictionaryMemberRest -> DictionaryField
 
 partialDictionary -> Dictionary
   : "dictionary" ID "{" dictionaryMembers "}" ";" { 
-      { name: $2, members: $4, inherit: None, partial: false, attrs: @list.empty() } 
+      { name: $2, members: $4, inheritance: None, partial: false, attrs: @list.empty() } 
     }
   ;
 

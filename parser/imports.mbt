@@ -15,7 +15,6 @@ typealias @syntax.(
   Callback,
   Rhs,
   Attribute,
-  AttributeKind,
   Member,
   Const,
   Operation,
