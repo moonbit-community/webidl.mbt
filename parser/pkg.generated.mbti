@@ -93,8 +93,6 @@ pub(all) enum Token {
   TRUE
   NULL
   UNDEFINED
-  MINUS
-  DOT
   ELLIPS
   COLON
   SEMI
@@ -190,8 +188,6 @@ pub(all) enum TokenKind {
   TK_TRUE
   TK_NULL
   TK_UNDEFINED
-  TK_MINUS
-  TK_DOT
   TK_ELLIPS
   TK_COLON
   TK_SEMI

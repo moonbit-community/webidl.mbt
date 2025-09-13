@@ -231,8 +231,6 @@ priv enum YYSymbol {
   T_TRUE
   T_NULL
   T_UNDEFINED
-  T_MINUS
-  T_DOT
   T_ELLIPS
   T_COLON
   T_SEMI
@@ -5058,8 +5056,6 @@ fn yy_input(
     TRUE => (T_TRUE, YYObj_Void)
     NULL => (T_NULL, YYObj_Void)
     UNDEFINED => (T_UNDEFINED, YYObj_Void)
-    MINUS => (T_MINUS, YYObj_Void)
-    DOT => (T_DOT, YYObj_Void)
     ELLIPS => (T_ELLIPS, YYObj_Void)
     COLON => (T_COLON, YYObj_Void)
     SEMI => (T_SEMI, YYObj_Void)
@@ -11334,8 +11330,6 @@ fn error(
         (T_TRUE, TK_TRUE),
         (T_NULL, TK_NULL),
         (T_UNDEFINED, TK_UNDEFINED),
-        (T_MINUS, TK_MINUS),
-        (T_DOT, TK_DOT),
         (T_ELLIPS, TK_ELLIPS),
         (T_COLON, TK_COLON),
         (T_SEMI, TK_SEMI),

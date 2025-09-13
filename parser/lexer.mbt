@@ -73,7 +73,7 @@ let keywords : Map[String, Token] = {
 }
 
 ///|
-fn Array::add(self : Self[Token], token : Token) -> Array[Token] {
+fn Array::add_and_return(self : Self[Token], token : Token) -> Array[Token] {
   self.push(token)
   self
 }
@@ -83,39 +83,39 @@ pub fn lex_(input : @string.View) -> Array[Token] {
   fn go(input : @string.View, acc : Array[Token]) -> Array[Token] {
     lexmatch input {
       "-?([1-9][0-9]*|0[Xx][0-9A-Fa-f]+|0[0-7]*)" as s, xs =>
-        go(xs, acc.add(INT(s.to_string())))
+        go(xs, acc.add_and_return(INT(s.to_string())))
       "-?(([0-9]+\.[0-9]*|[0-9]*\.[0-9]+)([Ee][+\-]?[0-9]+)?|[0-9]+[Ee][+\-]?[0-9]+)" as s, xs =>
-        go(xs, acc.add(DECIMAL(s.to_string())))
+        go(xs, acc.add_and_return(DECIMAL(s.to_string())))
       "[_\-]?[A-Za-z][0-9A-Z_a-z\-]*" as s, xs => {
         let s = s.to_string()
         let tok = match keywords.get(s) {
           None => ID(s)
           Some(t) => t
         }
-        go(xs, acc.add(tok))
+        go(xs, acc.add_and_return(tok))
       }
-      "\"[^\"]*\"" as s, xs => go(xs, acc.add(STRING(s.to_string())))
+      "\"[^\"]*\"" as s, xs => go(xs, acc.add_and_return(STRING(s.to_string())))
       "[\t\n\r ]+", xs => go(xs, acc)
       // FIXME: no-greedy 
       "\/\/.*\n|\/\*(.|\n)*\*\/", xs => go(xs, acc)
-      "-", xs => go(xs, acc.add(MINUS))
-      "\.", xs => go(xs, acc.add(DOT))
-      "\.\.\.", xs => go(xs, acc.add(ELLIPS))
-      ":", xs => go(xs, acc.add(COLON))
-      ";", xs => go(xs, acc.add(SEMI))
-      "<", xs => go(xs, acc.add(LT))
-      "=", xs => go(xs, acc.add(EQUAL))
-      ">", xs => go(xs, acc.add(GT))
-      "\?", xs => go(xs, acc.add(QUESTION))
-      "\*", xs => go(xs, acc.add(STAR))
-      "[{]", xs => go(xs, acc.add(LBRACE))
-      "[}]", xs => go(xs, acc.add(RBRACE))
-      "\(", xs => go(xs, acc.add(LPAREN))
-      "\)", xs => go(xs, acc.add(RPAREN))
-      "\[", xs => go(xs, acc.add(LBRACKET))
-      "\]", xs => go(xs, acc.add(RBRACKET))
-      ",", xs => go(xs, acc.add(COMMA))
-      "$", xs => acc.add(EOF)
+      // "-", xs => go(xs, acc.add_and_return(MINUS))
+      // "\.", xs => go(xs, acc.add_and_return(DOT))
+      "\.\.\.", xs => go(xs, acc.add_and_return(ELLIPS))
+      ":", xs => go(xs, acc.add_and_return(COLON))
+      ";", xs => go(xs, acc.add_and_return(SEMI))
+      "<", xs => go(xs, acc.add_and_return(LT))
+      "=", xs => go(xs, acc.add_and_return(EQUAL))
+      ">", xs => go(xs, acc.add_and_return(GT))
+      "\?", xs => go(xs, acc.add_and_return(QUESTION))
+      "\*", xs => go(xs, acc.add_and_return(STAR))
+      "[{]", xs => go(xs, acc.add_and_return(LBRACE))
+      "[}]", xs => go(xs, acc.add_and_return(RBRACE))
+      "\(", xs => go(xs, acc.add_and_return(LPAREN))
+      "\)", xs => go(xs, acc.add_and_return(RPAREN))
+      "\[", xs => go(xs, acc.add_and_return(LBRACKET))
+      "\]", xs => go(xs, acc.add_and_return(RBRACKET))
+      ",", xs => go(xs, acc.add_and_return(COMMA))
+      "$", _xs => acc.add_and_return(EOF)
       xs => {
         println(xs)
         panic()

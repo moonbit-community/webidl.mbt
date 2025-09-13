@@ -72,8 +72,6 @@ pub(all) enum Token {
   TRUE
   NULL
   UNDEFINED
-  MINUS
-  DOT
   ELLIPS
   COLON
   SEMI
@@ -169,8 +167,6 @@ pub fn Token::kind(self : Token) -> TokenKind {
     TRUE => TK_TRUE
     NULL => TK_NULL
     UNDEFINED => TK_UNDEFINED
-    MINUS => TK_MINUS
-    DOT => TK_DOT
     ELLIPS => TK_ELLIPS
     COLON => TK_COLON
     SEMI => TK_SEMI
@@ -266,8 +262,6 @@ pub(all) enum TokenKind {
   TK_TRUE
   TK_NULL
   TK_UNDEFINED
-  TK_MINUS
-  TK_DOT
   TK_ELLIPS
   TK_COLON
   TK_SEMI
@@ -364,8 +358,6 @@ pub impl Show for TokenKind with output(self, logger) {
       TK_TRUE => "\"true\""
       TK_NULL => "\"null\""
       TK_UNDEFINED => "\"undefined\""
-      TK_MINUS => "\"-\""
-      TK_DOT => "\".\""
       TK_ELLIPS => "\"...\""
       TK_COLON => "\":\""
       TK_SEMI => "\";\""
