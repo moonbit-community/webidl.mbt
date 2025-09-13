@@ -679,113 +679,135 @@ bufferRelatedType -> IDLType
   ;
 
 extendedAttributeList -> ExtAttrs
-  : "[" extendedAttribute extendedAttributes "]" { @list.empty() }
+  : "[" extendedAttribute extendedAttributes "]" { $3.add($2) }
   |                                              { @list.empty() }
   ;
 
 extendedAttributes -> ExtAttrs
-  : "," extendedAttribute extendedAttributes { @list.empty() }
+  : "," extendedAttribute extendedAttributes { $3.add($2) }
   |                                          { @list.empty() }
   ;
 
-extendedAttribute -> Unit
-  : "(" extendedAttributeInner ")" extendedAttributeRest {}
-  | "[" extendedAttributeInner "]" extendedAttributeRest {}
-  | "{" extendedAttributeInner "}" extendedAttributeRest {}
-  | other extendedAttributeRest {}
-  ;
 
-extendedAttributeRest
-  : extendedAttribute {}
-  |                   {}
-  ;
+// The extended attributes defined by the spec (2.14. Extended attributes) have two syntaxes:
+// 1. A loose one that accepts almost any sequence of tokens.
+// 2. A more restricted syntax.
+// Here, we use the restricted one.
 
-extendedAttributeInner
-  : "(" extendedAttributeInner ")" extendedAttributeInner {}
-  | "[" extendedAttributeInner "]" extendedAttributeInner {}
-  | "{" extendedAttributeInner "}" extendedAttributeInner {}
-  | otherOrComma extendedAttributeInner                   {}
-  |                                                       {}
-  ;
+extendedAttribute -> ExtAttr
+  : extendedAttributeNoArgs       { $1 }
+  | extendedAttributeArgList      { $1 }
+  | extendedAttributeIdent        { $1 }
+  | extendedAttributeString       { $1 }
+  | extendedAttributeInteger      { $1 }
+  | extendedAttributeDecimal      { $1 }
+  | extendedAttributeWildcard     { $1 }
+  | extendedAttributeIdentList    { $1 }
+  | extendedAttributeIntegerList  { $1 }
+  | extendedAttributeNamedArgList { $1 }
 
-other -> Unit
-  : INT               {}
-  | DECIMAL           {}
-  | ID                {}
-  | STRING            {}
-  | "-"               {}
-  | "-Infinity"       {}
-  | "."               {}
-  | "..."             {}
-  | ":"               {}
-  | ";"               {}
-  | "<"               {}
-  | "="               {}
-  | ">"               {}
-  | "?"               {}
-  | "*"               {}
-  | "ByteString"      {}
-  | "DOMString"       {}
-  | "FrozenArray"     {}
-  | "Infinity"        {}
-  | "NaN"             {}
-  | "ObservableArray" {}
-  | "Promise"         {}
-  | "USVString"       {}
-  | "any"             {}
-  | "bigint"          {}
-  | "boolean"         {}
-  | "byte"            {}
-  | "double"          {}
-  | "false"           {}
-  | "float"           {}
-  | "long"            {}
-  | "null"            {}
-  | "object"          {}
-  | "octet"           {}
-  | "or"              {}
-  | "optional"        {}
-  | "record"          {}
-  | "sequence"        {}
-  | "short"           {}
-  | "symbol"          {}
-  | "true"            {}
-  | "unsigned"        {}
-  | "undefined"       {}
-  | argumentNameKeyword {}
-  | bufferRelatedType   {}
-  ;
+identifierList -> List[Id]
+  : ID identifiers { $2.add($1) };
+
+identifiers -> List[Id]
+  : "," ID identifiers { $3.add($2) } 
+  |                    { @list.empty() };
+
+integerList -> List[String]
+  : INT integers { $2.add($1) };
+
+integers -> List[String]
+  : "," INT integers { $3.add($2) } 
+  |                  { @list.empty() };
+
+extendedAttributeNoArgs -> ExtAttr : ID                                   { make_ext_attr($1, NoArgs) };
+
+extendedAttributeArgList -> ExtAttr : ID "(" argumentList ")"             { make_ext_attr($1, ArgList($3)) };
+
+extendedAttributeIdent -> ExtAttr : ID "=" ID                             { make_ext_attr($1, Ident($3)) };
+
+extendedAttributeString -> ExtAttr : ID "=" STRING                        { make_ext_attr($1, String($3)) };
+
+extendedAttributeInteger -> ExtAttr : ID "=" INT                          { make_ext_attr($1, Integer($3)) };
+
+extendedAttributeDecimal -> ExtAttr : ID "=" DECIMAL                      { make_ext_attr($1, Decimal($3)) };
+
+extendedAttributeWildcard -> ExtAttr : ID "=" "*"                         { make_ext_attr($1, WildCard ) };
+
+extendedAttributeIdentList -> ExtAttr : ID "=" "(" identifierList ")"     { make_ext_attr($1, IdentList($4)) };
+
+extendedAttributeIntegerList -> ExtAttr : ID "=" "(" integerList ")"      { make_ext_attr($1, IntegerList($4)) };
+
+extendedAttributeNamedArgList -> ExtAttr : ID "=" ID "(" argumentList ")" { make_ext_attr($1, NamedArgList($3,$5)) };
 
 
-otherOrComma: other { panic() } | "," { panic() };
-
-identifierList: ID identifiers { panic() };
-
-identifiers: "," ID identifiers { panic() } | { panic() };
-
-integerList: INT integers { panic() };
-
-integers: "," INT integers { panic() } | { panic() };
-
-extendedAttributeNoArgs: ID { panic() };
-
-extendedAttributeArgList: ID "(" argumentList ")" { panic() };
-
-extendedAttributeIdent: ID "=" ID { panic() };
-
-extendedAttributeString: ID "=" STRING { panic() };
-
-extendedAttributeInteger: ID "=" INT { panic() };
-
-extendedAttributeDecimal: ID "=" DECIMAL { panic() };
-
-extendAttributeWildcard: ID "=" "*" { panic() };
-
-extendedAttributeIdentList: ID "=" "(" identifierList ")" { panic() };
-
-extendedAttributeIntegerList: ID "=" "(" integerList ")" { panic() };
-
-extendedAttributeNamedArgList: ID "=" ID "(" argumentList ")" { panic() };
-
-
-
+// extendedAttribute -> Unit
+//   : "(" extendedAttributeInner ")" extendedAttributeRest {}
+//   | "[" extendedAttributeInner "]" extendedAttributeRest {}
+//   | "{" extendedAttributeInner "}" extendedAttributeRest {}
+//   | other extendedAttributeRest {}
+//   ;
+// 
+// extendedAttributeRest
+//   : extendedAttribute {}
+//   |                   {}
+//   ;
+// 
+// extendedAttributeInner
+//   : "(" extendedAttributeInner ")" extendedAttributeInner {}
+//   | "[" extendedAttributeInner "]" extendedAttributeInner {}
+//   | "{" extendedAttributeInner "}" extendedAttributeInner {}
+//   | otherOrComma extendedAttributeInner                   {}
+//   |                                                       {}
+//   ;
+// 
+// other -> Unit
+//   : INT               {}
+//   | DECIMAL           {}
+//   | ID                {}
+//   | STRING            {}
+//   | "-"               {}
+//   | "-Infinity"       {}
+//   | "."               {}
+//   | "..."             {}
+//   | ":"               {}
+//   | ";"               {}
+//   | "<"               {}
+//   | "="               {}
+//   | ">"               {}
+//   | "?"               {}
+//   | "*"               {}
+//   | "ByteString"      {}
+//   | "DOMString"       {}
+//   | "FrozenArray"     {}
+//   | "Infinity"        {}
+//   | "NaN"             {}
+//   | "ObservableArray" {}
+//   | "Promise"         {}
+//   | "USVString"       {}
+//   | "any"             {}
+//   | "bigint"          {}
+//   | "boolean"         {}
+//   | "byte"            {}
+//   | "double"          {}
+//   | "false"           {}
+//   | "float"           {}
+//   | "long"            {}
+//   | "null"            {}
+//   | "object"          {}
+//   | "octet"           {}
+//   | "or"              {}
+//   | "optional"        {}
+//   | "record"          {}
+//   | "sequence"        {}
+//   | "short"           {}
+//   | "symbol"          {}
+//   | "true"            {}
+//   | "unsigned"        {}
+//   | "undefined"       {}
+//   | argumentNameKeyword {}
+//   | bufferRelatedType   {}
+//   ;
+// 
+// 
+// otherOrComma: other { } | "," { };

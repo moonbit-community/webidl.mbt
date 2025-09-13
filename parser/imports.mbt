@@ -13,7 +13,7 @@ typealias @syntax.(
   Dictionary,
   DictionaryField,
   Callback,
-  Value,
+  Rhs,
   Attribute,
   AttributeKind,
   Member,
@@ -29,6 +29,7 @@ typealias @syntax.(
   Argument,
   Definition,
   Constructor,
+  Value,
   Id
 )
 

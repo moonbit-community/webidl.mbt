@@ -4,13 +4,12 @@ package "Yoorkin/webidl/parser"
 import(
   "Yoorkin/webidl/syntax"
   "moonbitlang/core/list"
-  "moonbitlang/core/string"
 )
 
 // Values
 fn definitions(Array[(Token, Unit, Unit)], initial_pos? : Unit) -> @list.List[@syntax.Definition] raise ParseError
 
-fn lex_(@string.View) -> Array[Token]
+fn lex_(StringView) -> Array[Token]
 
 fn parse(Array[Token]) -> @list.List[@syntax.Definition]
 

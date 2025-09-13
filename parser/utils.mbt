@@ -46,13 +46,9 @@ fn Member::set_readonly(self : Self, readonly_ : Bool) -> Self {
     Attribute(rcd) => Attribute({ ..rcd, readonly_, })
     MapLike(rcd) => MapLike({ ..rcd, readonly_, })
     SetLike(rcd) => SetLike({ ..rcd, readonly_, })
-    AsyncIterable | Const | Constructor | Operation | Iterable => self
+    AsyncIterable(_) | Const(_) | Constructor(_) | Operation(_) | Iterable(_) =>
+      self
   }
-}
-
-///|
-fn fill_operation_attribute_const_static(member : Member) -> Member {
-  ...
 }
 
 ///|
@@ -62,4 +58,9 @@ fn Member::set_static(self : Self) -> Self {
     Attribute(rcd) => Attribute({ ..rcd, special: Static })
     _ => self
   }
+}
+
+///|
+fn make_ext_attr(name : Id, rhs : Rhs) -> ExtAttr {
+  { name, rhs }
 }

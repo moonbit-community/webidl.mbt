@@ -106,8 +106,7 @@ impl Show for Enum
 
 pub(all) struct ExtAttr {
   name : String
-  arguments : @list.List[Argument]
-  rhs : Rhs?
+  rhs : Rhs
 }
 impl Show for ExtAttr
 
@@ -251,15 +250,16 @@ pub(all) enum OperationKind {
 impl Show for OperationKind
 
 pub(all) enum Rhs {
-  Identifier(String)
-  IdentifierList(@list.List[String])
+  NoArgs
+  ArgList(@list.List[Argument])
+  Ident(String)
   String(String)
-  StringList(@list.List[String])
-  Decimal(String)
-  DecimalList(@list.List[String])
   Integer(String)
+  Decimal(String)
+  WildCard
+  IdentList(@list.List[String])
   IntegerList(@list.List[String])
-  Star
+  NamedArgList(String, @list.List[Argument])
 }
 impl Show for Rhs
 

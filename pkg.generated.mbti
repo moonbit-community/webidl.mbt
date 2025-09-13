@@ -1,7 +1,13 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "Yoorkin/webidl"
 
+import(
+  "Yoorkin/webidl/syntax"
+  "moonbitlang/core/list"
+)
+
 // Values
+fn parse(String) -> @list.List[@syntax.Definition]
 
 // Errors
 

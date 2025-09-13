@@ -1,25 +1,25 @@
 ///|
 pub(all) struct ExtAttr {
-  name : String
-  arguments : List[Argument]
-  rhs : Rhs?
-} derive(Show)
-
-///|
-pub(all) enum Rhs {
-  Identifier(Id)
-  IdentifierList(List[Id])
-  String(String)
-  StringList(List[String])
-  Decimal(String)
-  DecimalList(List[String])
-  Integer(String)
-  IntegerList(List[String])
-  Star
+  name : Id
+  rhs : Rhs
 } derive(Show)
 
 ///|
 pub typealias List[ExtAttr] as ExtAttrs
+
+///|
+pub(all) enum Rhs {
+  NoArgs
+  ArgList(List[Argument])
+  Ident(Id)
+  String(String)
+  Integer(String)
+  Decimal(String)
+  WildCard
+  IdentList(List[Id])
+  IntegerList(List[String])
+  NamedArgList(Id, List[Argument])
+} derive(Show)
 
 ///|
 pub(all) enum Value {
