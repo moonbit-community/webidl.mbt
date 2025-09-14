@@ -2,12 +2,13 @@
 package "Yoorkin/webidl"
 
 import(
+  "Yoorkin/webidl/parser"
   "Yoorkin/webidl/syntax"
   "moonbitlang/core/list"
 )
 
 // Values
-fn parse(String) -> @list.List[@syntax.Definition]
+fn parse_string(String, file? : String) -> @list.List[@syntax.Definition] raise @parser.IDLParseError
 
 // Errors
 

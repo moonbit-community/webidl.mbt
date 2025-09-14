@@ -1,5 +1,2 @@
 ///|
-pub fn parse(source : String) -> @syntax.Definitions {
-  let tokens = @parser.lex_(source)
-  @parser.parse(tokens)
-}
+pub fnalias @parser.parse_string

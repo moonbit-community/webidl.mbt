@@ -73,55 +73,73 @@ let keywords : Map[String, Token] = {
 }
 
 ///|
-fn Array::add_and_return(self : Self[Token], token : Token) -> Array[Token] {
-  self.push(token)
-  self
-}
-
-///|
-pub fn lex_(input : @string.View) -> Array[Token] {
-  fn go(input : @string.View, acc : Array[Token]) -> Array[Token] {
-    lexmatch input {
-      "-?([1-9][0-9]*|0[Xx][0-9A-Fa-f]+|0[0-7]*)" as s, xs =>
-        go(xs, acc.add_and_return(INT(s.to_string())))
-      "-?(([0-9]+\.[0-9]*|[0-9]*\.[0-9]+)([Ee][+\-]?[0-9]+)?|[0-9]+[Ee][+\-]?[0-9]+)" as s, xs =>
-        go(xs, acc.add_and_return(DECIMAL(s.to_string())))
-      "[_\-]?[A-Za-z][0-9A-Z_a-z\-]*" as s, xs => {
-        let s = s.to_string()
-        let tok = match keywords.get(s) {
-          None => ID(s)
-          Some(t) => t
-        }
-        go(xs, acc.add_and_return(tok))
-      }
-      "\"[^\"]*\"" as s, xs => go(xs, acc.add_and_return(STRING(s.to_string())))
-      "[\t\n\r ]+", xs => go(xs, acc)
-      // FIXME: no-greedy 
-      "\/\/.*\n|\/\*(.|\n)*\*\/", xs => go(xs, acc)
-      // "-", xs => go(xs, acc.add_and_return(MINUS))
-      // "\.", xs => go(xs, acc.add_and_return(DOT))
-      "\.\.\.", xs => go(xs, acc.add_and_return(ELLIPS))
-      ":", xs => go(xs, acc.add_and_return(COLON))
-      ";", xs => go(xs, acc.add_and_return(SEMI))
-      "<", xs => go(xs, acc.add_and_return(LT))
-      "=", xs => go(xs, acc.add_and_return(EQUAL))
-      ">", xs => go(xs, acc.add_and_return(GT))
-      "\?", xs => go(xs, acc.add_and_return(QUESTION))
-      "\*", xs => go(xs, acc.add_and_return(STAR))
-      "[{]", xs => go(xs, acc.add_and_return(LBRACE))
-      "[}]", xs => go(xs, acc.add_and_return(RBRACE))
-      "\(", xs => go(xs, acc.add_and_return(LPAREN))
-      "\)", xs => go(xs, acc.add_and_return(RPAREN))
-      "\[", xs => go(xs, acc.add_and_return(LBRACKET))
-      "\]", xs => go(xs, acc.add_and_return(RBRACKET))
-      ",", xs => go(xs, acc.add_and_return(COMMA))
-      "$", _xs => acc.add_and_return(EOF)
-      xs => {
-        println(xs)
-        panic()
-      }
-    }
+pub fn lex_(
+  input : @string.View,
+  file? : String = "",
+) -> Array[(Token, Position, Position)] raise IDLParseError {
+  let mut line = 1
+  let mut column = 1
+  let mut remain = input
+  let acc : Array[(Token, Position, Position)] = []
+  fn push(token : Token, lexeme : @string.View, xs : @string.View) {
+    let start = { file, line, column }
+    let end = { file, line, column: column + lexeme.length() }
+    acc.push((token, start, end))
+    column += lexeme.length()
+    remain = xs
   }
 
-  go(input, [])
+  for {
+    lexmatch remain {
+      "-?([1-9][0-9]*|0[Xx][0-9A-Fa-f]+|0[0-7]*)" as s, xs =>
+        push(INT(s.to_string()), s, xs)
+      "-?(([0-9]+\.[0-9]*|[0-9]*\.[0-9]+)([Ee][+\-]?[0-9]+)?|[0-9]+[Ee][+\-]?[0-9]+)" as s, xs =>
+        push(DECIMAL(s.to_string()), s, xs)
+      "[_\-]?[A-Za-z][0-9A-Z_a-z\-]*" as s, xs => {
+        let tok = match keywords.get(s.to_string()) {
+          None => ID(s.to_string())
+          Some(t) => t
+        }
+        push(tok, s, xs)
+      }
+      "\"[^\"]*\"" as s, xs => push(STRING(s.to_string()), s, xs)
+      "(\r\n)|\n", xs => {
+        line += 1
+        column = 1
+        remain = xs
+      }
+      "[\t ]+" as s, xs => {
+        column += s.length()
+        remain = xs
+      }
+      // FIXME: no-greedy 
+      "\/\/.*\n|\/\*(.|\n)*\*\/" as s, xs => {
+        column += s.length()
+        remain = xs
+      }
+      // "-", xs => go(xs, acc.add_and_return(MINUS))
+      // "\.", xs => go(xs, acc.add_and_return(DOT))
+      "\.\.\." as s, xs => push(ELLIPS, s, xs)
+      ":", xs => push(COLON, ":", xs)
+      ";", xs => push(SEMI, ";", xs)
+      "<", xs => push(LT, "<", xs)
+      "=", xs => push(EQUAL, "=", xs)
+      ">", xs => push(GT, ">", xs)
+      "\?", xs => push(QUESTION, "?", xs)
+      "\*", xs => push(STAR, "*", xs)
+      "[{]", xs => push(LBRACE, "{", xs)
+      "[}]", xs => push(RBRACE, "}", xs)
+      "\(", xs => push(LPAREN, "(", xs)
+      "\)", xs => push(RPAREN, ")", xs)
+      "\[", xs => push(LBRACKET, "[", xs)
+      "\]", xs => push(RBRACKET, "]", xs)
+      ",", xs => push(COMMA, ",", xs)
+      "$", _xs => {
+        push(EOF, "$", "")
+        break
+      }
+      xs => raise LexFailed(xs)
+    }
+  }
+  acc
 }

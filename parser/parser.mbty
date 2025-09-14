@@ -1,5 +1,7 @@
 %derive<Show> Token
 %derive<Eq> TokenKind
+%position<Position>
+
 %start definitions
 
 %token<String> INT

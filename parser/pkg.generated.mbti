@@ -7,19 +7,37 @@ import(
 )
 
 // Values
-fn definitions(Array[(Token, Unit, Unit)], initial_pos? : Unit) -> @list.List[@syntax.Definition] raise ParseError
+fn definitions(Array[(Token, Position, Position)], initial_pos? : Position) -> @list.List[@syntax.Definition] raise ParseError
 
-fn lex_(StringView) -> Array[Token]
+fn lex_(StringView, file? : String) -> Array[(Token, Position, Position)] raise IDLParseError
 
-fn parse(Array[Token]) -> @list.List[@syntax.Definition]
+fn parse(Array[(Token, Position, Position)]) -> @list.List[@syntax.Definition] raise ParseError
+
+fn parse_string(String, file? : String) -> @list.List[@syntax.Definition] raise IDLParseError
 
 // Errors
+pub(all) suberror IDLParseError {
+  LexFailed(StringView)
+  ParseFailed(ParseError)
+}
+impl Show for IDLParseError
+
 pub suberror ParseError {
-  UnexpectedToken(Token, (Unit, Unit), Array[TokenKind])
-  UnexpectedEndOfInput(Unit, Array[TokenKind])
+  UnexpectedToken(Token, (Position, Position), Array[TokenKind])
+  UnexpectedEndOfInput(Position, Array[TokenKind])
 }
 
 // Types and methods
+pub(all) struct Position {
+  file : String
+  line : Int
+  column : Int
+}
+impl Compare for Position
+impl Eq for Position
+impl Hash for Position
+impl Show for Position
+
 pub(all) enum Token {
   INT(String)
   ID(String)
