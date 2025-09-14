@@ -5,8 +5,8 @@
     "moonbitlang/yacc": "0.6.14"
   },
   "readme": "README.md",
-  "repository": "",
+  "repository": "https://github.com/moonbit-community/webidl.mbt",
   "license": "Apache-2.0",
-  "keywords": [],
-  "description": ""
+  "keywords": ["WebIDL", "Web"],
+  "description": "Whatwg WebIDL parser in MoonBit"
 }

@@ -1,6 +1,5 @@
 {
   "import": [
-    "Yoorkin/webidl/syntax",
     "Yoorkin/webidl/parser"
   ]
 }
