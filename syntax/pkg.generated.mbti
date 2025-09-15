@@ -18,6 +18,7 @@ pub(all) struct Argument {
   variadic : Bool
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for Argument
 impl Show for Argument
 
 pub(all) struct AsyncIterable {
@@ -26,6 +27,7 @@ pub(all) struct AsyncIterable {
   arguments : @list.List[Argument]
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for AsyncIterable
 impl Show for AsyncIterable
 
 pub(all) struct Attribute {
@@ -35,6 +37,7 @@ pub(all) struct Attribute {
   idl_type : IDLTypeWithExtAttr
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for Attribute
 impl Show for Attribute
 
 pub(all) enum AttributeKind {
@@ -43,6 +46,7 @@ pub(all) enum AttributeKind {
   Stringifier
   Inherit
 }
+impl @Yoorkin/prettyprinter.Pretty for AttributeKind
 impl Show for AttributeKind
 
 pub(all) struct Callback {
@@ -51,6 +55,7 @@ pub(all) struct Callback {
   arguments : @list.List[Argument]
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for Callback
 impl Show for Callback
 
 pub(all) struct Const {
@@ -59,12 +64,14 @@ pub(all) struct Const {
   value : Value
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for Const
 impl Show for Const
 
 pub(all) struct Constructor {
   arguments : @list.List[Argument]
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for Constructor
 impl Show for Constructor
 
 pub(all) enum Definition {
@@ -77,6 +84,7 @@ pub(all) enum Definition {
   Typedef(Typedef)
   Includes(Includes)
 }
+impl @Yoorkin/prettyprinter.Pretty for Definition
 impl Show for Definition
 
 pub(all) struct Dictionary {
@@ -86,6 +94,7 @@ pub(all) struct Dictionary {
   inheritance : String?
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for Dictionary
 impl Show for Dictionary
 
 pub(all) struct DictionaryField {
@@ -95,6 +104,7 @@ pub(all) struct DictionaryField {
   attrs : @list.List[ExtAttr]
   default : Value?
 }
+impl @Yoorkin/prettyprinter.Pretty for DictionaryField
 impl Show for DictionaryField
 
 pub(all) struct Enum {
@@ -102,12 +112,14 @@ pub(all) struct Enum {
   values : @list.List[String]
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for Enum
 impl Show for Enum
 
 pub(all) struct ExtAttr {
   name : String
   rhs : Rhs
 }
+impl @Yoorkin/prettyprinter.Pretty for ExtAttr
 impl Show for ExtAttr
 
 pub(all) enum FloatingType {
@@ -115,6 +127,7 @@ pub(all) enum FloatingType {
   Double
   Unrestricted(FloatingType)
 }
+impl @Yoorkin/prettyprinter.Pretty for FloatingType
 impl Show for FloatingType
 
 pub(all) enum IDLType {
@@ -155,12 +168,14 @@ pub(all) enum IDLType {
   ObservableArray(IDLTypeWithExtAttr)
   Any
 }
+impl @Yoorkin/prettyprinter.Pretty for IDLType
 impl Show for IDLType
 
 pub(all) struct IDLTypeWithExtAttr {
   attrs : @list.List[ExtAttr]
   ty : IDLType
 }
+impl @Yoorkin/prettyprinter.Pretty for IDLTypeWithExtAttr
 impl Show for IDLTypeWithExtAttr
 
 pub(all) struct Includes {
@@ -168,6 +183,7 @@ pub(all) struct Includes {
   includes : String
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for Includes
 impl Show for Includes
 
 pub(all) enum IntegerType {
@@ -176,6 +192,7 @@ pub(all) enum IntegerType {
   LongLong
   Unsigned(IntegerType)
 }
+impl @Yoorkin/prettyprinter.Pretty for IntegerType
 impl Show for IntegerType
 
 pub(all) struct Interface {
@@ -185,6 +202,7 @@ pub(all) struct Interface {
   inheritance : String?
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for Interface
 impl Show for Interface
 
 pub(all) struct InterfaceMixin {
@@ -193,6 +211,7 @@ pub(all) struct InterfaceMixin {
   members : @list.List[Member]
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for InterfaceMixin
 impl Show for InterfaceMixin
 
 pub(all) struct Iterable {
@@ -201,6 +220,7 @@ pub(all) struct Iterable {
   async_ : Bool
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for Iterable
 impl Show for Iterable
 
 pub(all) struct MapLike {
@@ -208,6 +228,7 @@ pub(all) struct MapLike {
   readonly_ : Bool
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for MapLike
 impl Show for MapLike
 
 pub(all) enum Member {
@@ -220,6 +241,7 @@ pub(all) enum Member {
   MapLike(MapLike)
   SetLike(SetLike)
 }
+impl @Yoorkin/prettyprinter.Pretty for Member
 impl Show for Member
 
 pub(all) struct Namespace {
@@ -228,6 +250,7 @@ pub(all) struct Namespace {
   members : @list.List[Member]
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for Namespace
 impl Show for Namespace
 
 pub(all) struct Operation {
@@ -237,6 +260,7 @@ pub(all) struct Operation {
   arguments : @list.List[Argument]
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for Operation
 impl Show for Operation
 
 pub(all) enum OperationKind {
@@ -247,6 +271,7 @@ pub(all) enum OperationKind {
   Static
   Stringifier
 }
+impl @Yoorkin/prettyprinter.Pretty for OperationKind
 impl Show for OperationKind
 
 pub(all) enum Rhs {
@@ -261,6 +286,7 @@ pub(all) enum Rhs {
   IntegerList(@list.List[String])
   NamedArgList(String, @list.List[Argument])
 }
+impl @Yoorkin/prettyprinter.Pretty for Rhs
 impl Show for Rhs
 
 pub(all) struct SetLike {
@@ -268,6 +294,7 @@ pub(all) struct SetLike {
   readonly_ : Bool
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for SetLike
 impl Show for SetLike
 
 pub(all) enum StringType {
@@ -275,6 +302,7 @@ pub(all) enum StringType {
   DOMString
   USVString
 }
+impl @Yoorkin/prettyprinter.Pretty for StringType
 impl Show for StringType
 
 pub(all) struct Typedef {
@@ -282,6 +310,7 @@ pub(all) struct Typedef {
   idl_type : IDLTypeWithExtAttr
   attrs : @list.List[ExtAttr]
 }
+impl @Yoorkin/prettyprinter.Pretty for Typedef
 impl Show for Typedef
 
 pub(all) enum Value {
@@ -296,6 +325,7 @@ pub(all) enum Value {
   Sequence
   Dictionary
 }
+impl @Yoorkin/prettyprinter.Pretty for Value
 impl Show for Value
 
 // Type aliases

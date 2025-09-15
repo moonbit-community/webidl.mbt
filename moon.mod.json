@@ -1,12 +1,18 @@
 {
   "name": "Yoorkin/webidl",
   "version": "0.1.0",
+  "deps": {
+    "Yoorkin/prettyprinter": "0.4.6"
+  },
   "bin-deps": {
     "moonbitlang/yacc": "0.6.14"
   },
   "readme": "README.md",
   "repository": "https://github.com/moonbit-community/webidl.mbt",
   "license": "Apache-2.0",
-  "keywords": ["WebIDL", "Web"],
+  "keywords": [
+    "WebIDL",
+    "Web"
+  ],
   "description": "Whatwg WebIDL parser in MoonBit"
 }
