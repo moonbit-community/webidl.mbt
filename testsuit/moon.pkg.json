@@ -1,0 +1,9 @@
+{
+  "import": [
+    "Yoorkin/webidl/parser",
+    "moonbitlang/x/fs",
+    "Yoorkin/webidl",
+    "Yoorkin/webidl/syntax",
+    "Yoorkin/prettyprinter"
+  ]
+}
