@@ -73,7 +73,7 @@ let keywords : Map[String, Token] = {
 }
 
 ///|
-pub fn lex_(
+pub fn tokenize(
   input : @string.View,
   file? : String = "",
 ) -> Array[(Token, Position, Position)] raise IDLParseError {
@@ -113,8 +113,15 @@ pub fn lex_(
         remain = xs
       }
       // FIXME: no-greedy 
-      "\/\/.*\n|\/\*(.|\n)*\*\/" as s, xs => {
-        column += s.length()
+      "[/][/][^\n]*\n", xs => {
+        line += 1
+        column = 1
+        remain = xs
+      }
+      "\/\*([^*]|\*+[^*/])*\*+\/" as s, xs => {
+        let strs = s.split("\n").collect()
+        line += strs.length() - 1
+        column += strs.last().unwrap_or("").length()
         remain = xs
       }
       // "-", xs => go(xs, acc.add_and_return(MINUS))
@@ -134,8 +141,8 @@ pub fn lex_(
       "\[", xs => push(LBRACKET, "[", xs)
       "\]", xs => push(RBRACKET, "]", xs)
       ",", xs => push(COMMA, ",", xs)
-      "$", _xs => {
-        push(EOF, "$", "")
+      "$", _ => {
+        push(EOF, "", "")
         break
       }
       xs => raise LexFailed(xs)

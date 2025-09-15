@@ -26,6 +26,18 @@ pub impl Show for IDLParseError with output(self, logger) {
 }
 
 ///|
+pub impl Show for ParseError with output(self, logger) {
+  match self {
+    UnexpectedToken(token, (start, end), remain) =>
+      logger.write_string(
+        "UnexpectedToken at (\{start}, \{end}): \{token}, \{remain}",
+      )
+    UnexpectedEndOfInput(pos, remain) =>
+      logger.write_string("UnexpectedEOF: \{pos}, \{remain}")
+  }
+}
+
+///|
 /// Parse a string containing WebIDL definitions.
 /// 
 /// # Raises
@@ -37,7 +49,7 @@ pub fn parse_string(
   source : String,
   file? : String = "",
 ) -> @syntax.Definitions raise IDLParseError {
-  let tokens = lex_(source, file~)
+  let tokens = tokenize(source, file~)
   parse(tokens) catch {
     e => raise ParseFailed(e)
   }

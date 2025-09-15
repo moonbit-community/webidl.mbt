@@ -1,6 +1,6 @@
 ///|
 fn lex_test(input : String) -> String {
-  let tokens = lex_(input) catch {
+  let tokens = tokenize(input) catch {
     err => {
       println(err)
       []
@@ -11,7 +11,7 @@ fn lex_test(input : String) -> String {
 
 ///|
 fn parse_test(input : String) -> @list.List[@syntax.Definition] {
-  parse(lex_(input)) catch {
+  parse(tokenize(input)) catch {
     err => {
       println(err)
       @list.empty()
@@ -422,7 +422,7 @@ test "lex" {
       #|(LPAREN, 57:35, 57:36)
       #|(RPAREN, 57:36, 57:37)
       #|(SEMI, 57:37, 57:38)
-      #|(EOF, 57:39, 57:40)
+      #|(EOF, 57:39, 57:39)
     ),
   )
   inspect(
