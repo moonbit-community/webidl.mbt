@@ -6,7 +6,7 @@
     "moonbitlang/x": "0.4.36"
   },
   "bin-deps": {
-    "moonbitlang/yacc": "0.6.14"
+    "moonbitlang/yacc": "0.7.2"
   },
   "readme": "README.md",
   "repository": "https://github.com/moonbit-community/webidl.mbt",

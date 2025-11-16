@@ -1,5 +1,5 @@
 ///|
-let base = "testsuit/__snapshot__/"
+let base = "testsuite/__snapshot__/"
 
 ///|
 using @parser {type Token, type Position}
