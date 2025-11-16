@@ -26,7 +26,7 @@ pub(all) enum Member {
 } derive(Show)
 
 ///|
-pub typealias String as Id
+pub type Id = String
 
 ///|
 pub(all) struct Interface {
