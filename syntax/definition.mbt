@@ -8,7 +8,7 @@ pub(all) enum Definition {
   Enum(Enum)
   Typedef(Typedef)
   Includes(Includes)
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub type Definitions = List[Definition]
@@ -23,7 +23,7 @@ pub(all) enum Member {
   AsyncIterable(AsyncIterable)
   MapLike(MapLike)
   SetLike(SetLike)
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub type Id = String
@@ -35,7 +35,7 @@ pub(all) struct Interface {
   members : List[Member]
   inheritance : Id?
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct InterfaceMixin {
@@ -43,7 +43,7 @@ pub(all) struct InterfaceMixin {
   partial : Bool
   members : List[Member]
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct Namespace {
@@ -51,7 +51,7 @@ pub(all) struct Namespace {
   partial : Bool
   members : List[Member]
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct Callback {
@@ -59,7 +59,7 @@ pub(all) struct Callback {
   idl_type : IDLType
   arguments : List[Argument]
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct Dictionary {
@@ -68,7 +68,7 @@ pub(all) struct Dictionary {
   members : List[DictionaryField]
   inheritance : Id?
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct DictionaryField {
@@ -77,28 +77,28 @@ pub(all) struct DictionaryField {
   idl_type : IDLTypeWithExtAttr
   attrs : ExtAttrs
   default : Value?
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct Enum {
   name : Id
   values : List[String]
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct Typedef {
   name : Id
   idl_type : IDLTypeWithExtAttr
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct Includes {
   target : Id
   includes : Id
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct Operation {
@@ -107,7 +107,7 @@ pub(all) struct Operation {
   name : Id?
   arguments : List[Argument]
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) enum OperationKind {
@@ -117,13 +117,13 @@ pub(all) enum OperationKind {
   Deleter
   Static
   Stringifier
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct Constructor {
   arguments : List[Argument]
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct Attribute {
@@ -132,7 +132,7 @@ pub(all) struct Attribute {
   readonly_ : Bool
   idl_type : IDLTypeWithExtAttr
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) enum AttributeKind {
@@ -140,7 +140,7 @@ pub(all) enum AttributeKind {
   Static
   Stringifier
   Inherit
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct Const {
@@ -148,7 +148,7 @@ pub(all) struct Const {
   idl_type : IDLType
   value : Value
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct Argument {
@@ -158,14 +158,14 @@ pub(all) struct Argument {
   optional : Bool
   variadic : Bool
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct MapLike {
   idl_type : IDLTypeWithExtAttr
   readonly_ : Bool
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct Iterable {
@@ -173,7 +173,7 @@ pub(all) struct Iterable {
   opt_type : IDLTypeWithExtAttr?
   async_ : Bool
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct AsyncIterable {
@@ -181,11 +181,11 @@ pub(all) struct AsyncIterable {
   opt_type : IDLTypeWithExtAttr?
   arguments : List[Argument]
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) struct SetLike {
   idl_type : IDLTypeWithExtAttr
   readonly_ : Bool
   attrs : ExtAttrs
-} derive(Show)
+} derive(Show, ToJson)

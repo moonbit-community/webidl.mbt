@@ -2,7 +2,7 @@
 pub(all) struct IDLTypeWithExtAttr {
   attrs : ExtAttrs
   ty : IDLType
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) enum IDLType {
@@ -46,21 +46,21 @@ pub(all) enum IDLType {
   FrozenArray(IDLTypeWithExtAttr)
   ObservableArray(IDLTypeWithExtAttr)
   Any
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) enum FloatingType {
   Float
   Double
   Unrestricted(FloatingType)
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) enum StringType {
   ByteString
   DOMString
   USVString
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) enum IntegerType {
@@ -68,4 +68,4 @@ pub(all) enum IntegerType {
   Long
   LongLong
   Unsigned(IntegerType)
-} derive(Show)
+} derive(Show, ToJson)
