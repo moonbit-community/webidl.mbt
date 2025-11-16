@@ -11,7 +11,7 @@ pub(all) enum Definition {
 } derive(Show)
 
 ///|
-pub typealias List[Definition] as Definitions
+pub type Definitions = List[Definition]
 
 ///|
 pub(all) enum Member {

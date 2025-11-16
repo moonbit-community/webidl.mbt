@@ -1,2 +1,2 @@
 ///|
-pub fnalias @parser.parse_string
+pub using @parser {parse_string}

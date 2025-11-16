@@ -5,7 +5,7 @@ pub(all) struct ExtAttr {
 } derive(Show)
 
 ///|
-pub typealias List[ExtAttr] as ExtAttrs
+pub type ExtAttrs = List[ExtAttr]
 
 ///|
 pub(all) enum Rhs {

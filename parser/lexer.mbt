@@ -90,35 +90,37 @@ pub fn tokenize(
   }
 
   for {
-    lexmatch remain {
-      "-?([1-9][0-9]*|0[Xx][0-9A-Fa-f]+|0[0-7]*)" as s, xs =>
+    lexmatch remain with longest {
+      ("-?([1-9][0-9]*|0[Xx][0-9A-Fa-f]+|0[0-7]*)" as s, xs) =>
         push(INT(s.to_string()), s, xs)
-      "-?(([0-9]+\.[0-9]*|[0-9]*\.[0-9]+)([Ee][+\-]?[0-9]+)?|[0-9]+[Ee][+\-]?[0-9]+)" as s, xs =>
-        push(DECIMAL(s.to_string()), s, xs)
-      "[_\-]?[A-Za-z][0-9A-Z_a-z\-]*" as s, xs => {
+      (
+        "-?(([0-9]+\.[0-9]*|[0-9]*\.[0-9]+)([Ee][+\-]?[0-9]+)?|[0-9]+[Ee][+\-]?[0-9]+)" as s,
+        xs
+      ) => push(DECIMAL(s.to_string()), s, xs)
+      ("[_\-]?[A-Za-z][0-9A-Z_a-z\-]*" as s, xs) => {
         let tok = match keywords.get(s.to_string()) {
           None => ID(s.to_string())
           Some(t) => t
         }
         push(tok, s, xs)
       }
-      "\"[^\"]*\"" as s, xs => push(STRING(s.to_string()), s, xs)
-      "(\r\n)|\n", xs => {
+      ("\"[^\"]*\"" as s, xs) => push(STRING(s.to_string()), s, xs)
+      ("(\r\n)|\n", xs) => {
         line += 1
         column = 1
         remain = xs
       }
-      "[\t ]+" as s, xs => {
+      ("[\t ]+" as s, xs) => {
         column += s.length()
         remain = xs
       }
       // FIXME: no-greedy 
-      "[/][/][^\n]*\n", xs => {
+      ("[/][/][^\n]*\n", xs) => {
         line += 1
         column = 1
         remain = xs
       }
-      "\/\*([^*]|\*+[^*/])*\*+\/" as s, xs => {
+      ("\/\*([^*]|\*+[^*/])*\*+\/" as s, xs) => {
         let strs = s.split("\n").collect()
         line += strs.length() - 1
         column += strs.last().unwrap_or("").length()
@@ -126,22 +128,22 @@ pub fn tokenize(
       }
       // "-", xs => go(xs, acc.add_and_return(MINUS))
       // "\.", xs => go(xs, acc.add_and_return(DOT))
-      "\.\.\." as s, xs => push(ELLIPS, s, xs)
-      ":", xs => push(COLON, ":", xs)
-      ";", xs => push(SEMI, ";", xs)
-      "<", xs => push(LT, "<", xs)
-      "=", xs => push(EQUAL, "=", xs)
-      ">", xs => push(GT, ">", xs)
-      "\?", xs => push(QUESTION, "?", xs)
-      "\*", xs => push(STAR, "*", xs)
-      "[{]", xs => push(LBRACE, "{", xs)
-      "[}]", xs => push(RBRACE, "}", xs)
-      "\(", xs => push(LPAREN, "(", xs)
-      "\)", xs => push(RPAREN, ")", xs)
-      "\[", xs => push(LBRACKET, "[", xs)
-      "\]", xs => push(RBRACKET, "]", xs)
-      ",", xs => push(COMMA, ",", xs)
-      "$", _ => {
+      ("\.\.\." as s, xs) => push(ELLIPS, s, xs)
+      (":", xs) => push(COLON, ":", xs)
+      (";", xs) => push(SEMI, ";", xs)
+      ("<", xs) => push(LT, "<", xs)
+      ("=", xs) => push(EQUAL, "=", xs)
+      (">", xs) => push(GT, ">", xs)
+      ("\?", xs) => push(QUESTION, "?", xs)
+      ("\*", xs) => push(STAR, "*", xs)
+      ("[{]", xs) => push(LBRACE, "{", xs)
+      ("[}]", xs) => push(RBRACE, "}", xs)
+      ("\(", xs) => push(LPAREN, "(", xs)
+      ("\)", xs) => push(RPAREN, ")", xs)
+      ("\[", xs) => push(LBRACKET, "[", xs)
+      ("\]", xs) => push(RBRACKET, "]", xs)
+      (",", xs) => push(COMMA, ",", xs)
+      ("$", _) => {
         push(EOF, "", "")
         break
       }

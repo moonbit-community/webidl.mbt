@@ -2,7 +2,8 @@
   "name": "Yoorkin/webidl",
   "version": "0.2.0",
   "deps": {
-    "Yoorkin/prettyprinter": "0.4.6"
+    "Yoorkin/prettyprinter": "0.4.6",
+    "moonbitlang/x": "0.4.36"
   },
   "bin-deps": {
     "moonbitlang/yacc": "0.6.14"
