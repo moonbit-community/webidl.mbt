@@ -2,7 +2,7 @@
 pub(all) struct ExtAttr {
   name : Id
   rhs : Rhs
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub type ExtAttrs = List[ExtAttr]
@@ -19,7 +19,7 @@ pub(all) enum Rhs {
   IdentList(List[Id])
   IntegerList(List[String])
   NamedArgList(Id, List[Argument])
-} derive(Show)
+} derive(Show, ToJson)
 
 ///|
 pub(all) enum Value {
@@ -33,4 +33,4 @@ pub(all) enum Value {
   NaN
   Sequence
   Dictionary
-} derive(Show)
+} derive(Show, ToJson)
