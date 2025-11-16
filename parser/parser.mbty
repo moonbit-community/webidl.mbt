@@ -397,7 +397,7 @@ argumentRest -> Argument
       { name: $3, idl_type: $2, default: $4, optional: true, variadic: false, attrs: @list.empty() } 
     }
   | type_ ellipsis argumentName { 
-      { name: $3, idl_type: make_with_attrs($1), default: None, optional: false, variadic: true, attrs: @list.empty() }  
+      { name: $3, idl_type: make_with_attrs($1), default: None, optional: false, variadic: $2, attrs: @list.empty() }
     }
   ;
 
@@ -406,10 +406,9 @@ argumentName -> Id
   | ID                  { $1 }
   ;
 
-ellipsis
-  : "..." {}
-  |       {}
-  ;
+ellipsis -> Bool
+  : ELLIPS { true}
+  |  {false}
 
 constructor -> Constructor
   : "constructor" "(" argumentList ")" ";" { { arguments: $3, attrs: @list.empty() } }
