@@ -1,2 +1,2 @@
 ///|
-typealias @list.List
+using @list {type List}

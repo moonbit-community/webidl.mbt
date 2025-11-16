@@ -1,8 +1,8 @@
 ///|
-traitalias @prettyprinter.Pretty
+using @prettyprinter {trait Pretty}
 
 ///|
-fnalias @prettyprinter.(ctor, record, pretty)
+using @prettyprinter {ctor, record, pretty}
 
 ///|
 pub impl Pretty for Definition with pretty(self) {

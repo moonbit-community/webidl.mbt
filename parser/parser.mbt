@@ -143,10 +143,10 @@ priv suberror YYObj_String_ String?
 priv suberror YYObj_IDLTypeWithExtAttr_ IDLTypeWithExtAttr?
 
 ///|
-typealias (YYSymbol) -> YYDecision as YYState
+type YYState = (YYSymbol) -> YYDecision
 
 ///|
-typealias (Position, ArrayView[(YYObj, Position, Position)]) -> YYObj as YYAction
+type YYAction = (Position, ArrayView[(YYObj, Position, Position)]) -> YYObj
 
 ///|
 priv enum YYDecision {
