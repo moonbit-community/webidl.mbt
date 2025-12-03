@@ -11162,7 +11162,7 @@ fn[T] yy_parse(
         match lookahead {
           Some(la) => state(la.0)
           None =>
-            if cursor < tokens.length() {
+            if cursor < tokens.length().to_int() {
               let (token, start_pos, end_pos) = tokens[cursor]
               cursor += 1
               let (symbol, data) = yy_input(token, start_pos, end_pos)
@@ -11191,12 +11191,12 @@ fn[T] yy_parse(
       | ReduceNoLookahead(count, symbol, action) =>
         loop (count, symbol, action) {
           _ => {
-            let args = data_stack[data_stack.length() - count:]
+            let args = data_stack[data_stack.length().to_int() - count:]
             let data = action(last_pos, args)
-            let (start_pos, end_pos) = if args.length() == 0 {
+            let (start_pos, end_pos) = if args.length().to_int() == 0 {
               (last_pos, last_pos)
             } else {
-              (args[0].1, args[args.length() - 1].2)
+              (args[0].1, args[args.length().to_int() - 1].2)
             }
             for i in 0..<count {
               ignore(data_stack.unsafe_pop())

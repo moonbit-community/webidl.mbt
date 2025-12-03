@@ -83,9 +83,9 @@ pub fn tokenize(
   let acc : Array[(Token, Position, Position)] = []
   fn push(token : Token, lexeme : @string.View, xs : @string.View) {
     let start = { file, line, column }
-    let end = { file, line, column: column + lexeme.length() }
+    let end = { file, line, column: column + lexeme.length().to_int() }
     acc.push((token, start, end))
-    column += lexeme.length()
+    column += lexeme.length().to_int()
     remain = xs
   }
 
@@ -111,7 +111,7 @@ pub fn tokenize(
         remain = xs
       }
       ("[\t ]+" as s, xs) => {
-        column += s.length()
+        column += s.length().to_int()
         remain = xs
       }
       // FIXME: no-greedy 
@@ -122,8 +122,8 @@ pub fn tokenize(
       }
       ("\/\*([^*]|\*+[^*/])*\*+\/" as s, xs) => {
         let strs = s.split("\n").collect()
-        line += strs.length() - 1
-        column += strs.last().unwrap_or("").length()
+        line += strs.length().to_int() - 1
+        column += strs.last().unwrap_or("").length().to_int()
         remain = xs
       }
       // "-", xs => go(xs, acc.add_and_return(MINUS))
