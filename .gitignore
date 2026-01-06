@@ -3,3 +3,5 @@ target/
 .mooncakes/
 .moonagent/
 *.map.json
+_build/
+target
