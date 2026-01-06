@@ -2,6 +2,7 @@
 package "Yoorkin/webidl/syntax"
 
 import(
+  "Yoorkin/prettyprinter"
   "moonbitlang/core/list"
 )
 
@@ -18,8 +19,9 @@ pub(all) struct Argument {
   variadic : Bool
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for Argument
-impl Show for Argument
+pub impl @prettyprinter.Pretty for Argument
+pub impl Show for Argument
+pub impl ToJson for Argument
 
 pub(all) struct AsyncIterable {
   idl_type : IDLTypeWithExtAttr
@@ -27,8 +29,9 @@ pub(all) struct AsyncIterable {
   arguments : @list.List[Argument]
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for AsyncIterable
-impl Show for AsyncIterable
+pub impl @prettyprinter.Pretty for AsyncIterable
+pub impl Show for AsyncIterable
+pub impl ToJson for AsyncIterable
 
 pub(all) struct Attribute {
   name : String
@@ -37,8 +40,9 @@ pub(all) struct Attribute {
   idl_type : IDLTypeWithExtAttr
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for Attribute
-impl Show for Attribute
+pub impl @prettyprinter.Pretty for Attribute
+pub impl Show for Attribute
+pub impl ToJson for Attribute
 
 pub(all) enum AttributeKind {
   Regular
@@ -46,8 +50,9 @@ pub(all) enum AttributeKind {
   Stringifier
   Inherit
 }
-impl @Yoorkin/prettyprinter.Pretty for AttributeKind
-impl Show for AttributeKind
+pub impl @prettyprinter.Pretty for AttributeKind
+pub impl Show for AttributeKind
+pub impl ToJson for AttributeKind
 
 pub(all) struct Callback {
   name : String
@@ -55,8 +60,9 @@ pub(all) struct Callback {
   arguments : @list.List[Argument]
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for Callback
-impl Show for Callback
+pub impl @prettyprinter.Pretty for Callback
+pub impl Show for Callback
+pub impl ToJson for Callback
 
 pub(all) struct Const {
   name : String
@@ -64,15 +70,17 @@ pub(all) struct Const {
   value : Value
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for Const
-impl Show for Const
+pub impl @prettyprinter.Pretty for Const
+pub impl Show for Const
+pub impl ToJson for Const
 
 pub(all) struct Constructor {
   arguments : @list.List[Argument]
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for Constructor
-impl Show for Constructor
+pub impl @prettyprinter.Pretty for Constructor
+pub impl Show for Constructor
+pub impl ToJson for Constructor
 
 pub(all) enum Definition {
   Interface(Interface)
@@ -84,8 +92,9 @@ pub(all) enum Definition {
   Typedef(Typedef)
   Includes(Includes)
 }
-impl @Yoorkin/prettyprinter.Pretty for Definition
-impl Show for Definition
+pub impl @prettyprinter.Pretty for Definition
+pub impl Show for Definition
+pub impl ToJson for Definition
 
 pub(all) struct Dictionary {
   name : String
@@ -94,8 +103,9 @@ pub(all) struct Dictionary {
   inheritance : String?
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for Dictionary
-impl Show for Dictionary
+pub impl @prettyprinter.Pretty for Dictionary
+pub impl Show for Dictionary
+pub impl ToJson for Dictionary
 
 pub(all) struct DictionaryField {
   name : String
@@ -104,31 +114,35 @@ pub(all) struct DictionaryField {
   attrs : @list.List[ExtAttr]
   default : Value?
 }
-impl @Yoorkin/prettyprinter.Pretty for DictionaryField
-impl Show for DictionaryField
+pub impl @prettyprinter.Pretty for DictionaryField
+pub impl Show for DictionaryField
+pub impl ToJson for DictionaryField
 
 pub(all) struct Enum {
   name : String
   values : @list.List[String]
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for Enum
-impl Show for Enum
+pub impl @prettyprinter.Pretty for Enum
+pub impl Show for Enum
+pub impl ToJson for Enum
 
 pub(all) struct ExtAttr {
   name : String
   rhs : Rhs
 }
-impl @Yoorkin/prettyprinter.Pretty for ExtAttr
-impl Show for ExtAttr
+pub impl @prettyprinter.Pretty for ExtAttr
+pub impl Show for ExtAttr
+pub impl ToJson for ExtAttr
 
 pub(all) enum FloatingType {
   Float
   Double
   Unrestricted(FloatingType)
 }
-impl @Yoorkin/prettyprinter.Pretty for FloatingType
-impl Show for FloatingType
+pub impl @prettyprinter.Pretty for FloatingType
+pub impl Show for FloatingType
+pub impl ToJson for FloatingType
 
 pub(all) enum IDLType {
   Integer(IntegerType)
@@ -168,23 +182,26 @@ pub(all) enum IDLType {
   ObservableArray(IDLTypeWithExtAttr)
   Any
 }
-impl @Yoorkin/prettyprinter.Pretty for IDLType
-impl Show for IDLType
+pub impl @prettyprinter.Pretty for IDLType
+pub impl Show for IDLType
+pub impl ToJson for IDLType
 
 pub(all) struct IDLTypeWithExtAttr {
   attrs : @list.List[ExtAttr]
   ty : IDLType
 }
-impl @Yoorkin/prettyprinter.Pretty for IDLTypeWithExtAttr
-impl Show for IDLTypeWithExtAttr
+pub impl @prettyprinter.Pretty for IDLTypeWithExtAttr
+pub impl Show for IDLTypeWithExtAttr
+pub impl ToJson for IDLTypeWithExtAttr
 
 pub(all) struct Includes {
   target : String
   includes : String
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for Includes
-impl Show for Includes
+pub impl @prettyprinter.Pretty for Includes
+pub impl Show for Includes
+pub impl ToJson for Includes
 
 pub(all) enum IntegerType {
   Short
@@ -192,8 +209,9 @@ pub(all) enum IntegerType {
   LongLong
   Unsigned(IntegerType)
 }
-impl @Yoorkin/prettyprinter.Pretty for IntegerType
-impl Show for IntegerType
+pub impl @prettyprinter.Pretty for IntegerType
+pub impl Show for IntegerType
+pub impl ToJson for IntegerType
 
 pub(all) struct Interface {
   name : String
@@ -202,8 +220,9 @@ pub(all) struct Interface {
   inheritance : String?
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for Interface
-impl Show for Interface
+pub impl @prettyprinter.Pretty for Interface
+pub impl Show for Interface
+pub impl ToJson for Interface
 
 pub(all) struct InterfaceMixin {
   name : String
@@ -211,8 +230,9 @@ pub(all) struct InterfaceMixin {
   members : @list.List[Member]
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for InterfaceMixin
-impl Show for InterfaceMixin
+pub impl @prettyprinter.Pretty for InterfaceMixin
+pub impl Show for InterfaceMixin
+pub impl ToJson for InterfaceMixin
 
 pub(all) struct Iterable {
   idl_type : IDLTypeWithExtAttr
@@ -220,16 +240,18 @@ pub(all) struct Iterable {
   async_ : Bool
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for Iterable
-impl Show for Iterable
+pub impl @prettyprinter.Pretty for Iterable
+pub impl Show for Iterable
+pub impl ToJson for Iterable
 
 pub(all) struct MapLike {
   idl_type : IDLTypeWithExtAttr
   readonly_ : Bool
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for MapLike
-impl Show for MapLike
+pub impl @prettyprinter.Pretty for MapLike
+pub impl Show for MapLike
+pub impl ToJson for MapLike
 
 pub(all) enum Member {
   Operation(Operation)
@@ -241,8 +263,9 @@ pub(all) enum Member {
   MapLike(MapLike)
   SetLike(SetLike)
 }
-impl @Yoorkin/prettyprinter.Pretty for Member
-impl Show for Member
+pub impl @prettyprinter.Pretty for Member
+pub impl Show for Member
+pub impl ToJson for Member
 
 pub(all) struct Namespace {
   name : String
@@ -250,8 +273,9 @@ pub(all) struct Namespace {
   members : @list.List[Member]
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for Namespace
-impl Show for Namespace
+pub impl @prettyprinter.Pretty for Namespace
+pub impl Show for Namespace
+pub impl ToJson for Namespace
 
 pub(all) struct Operation {
   special : OperationKind
@@ -260,8 +284,9 @@ pub(all) struct Operation {
   arguments : @list.List[Argument]
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for Operation
-impl Show for Operation
+pub impl @prettyprinter.Pretty for Operation
+pub impl Show for Operation
+pub impl ToJson for Operation
 
 pub(all) enum OperationKind {
   Regular
@@ -271,8 +296,9 @@ pub(all) enum OperationKind {
   Static
   Stringifier
 }
-impl @Yoorkin/prettyprinter.Pretty for OperationKind
-impl Show for OperationKind
+pub impl @prettyprinter.Pretty for OperationKind
+pub impl Show for OperationKind
+pub impl ToJson for OperationKind
 
 pub(all) enum Rhs {
   NoArgs
@@ -286,32 +312,36 @@ pub(all) enum Rhs {
   IntegerList(@list.List[String])
   NamedArgList(String, @list.List[Argument])
 }
-impl @Yoorkin/prettyprinter.Pretty for Rhs
-impl Show for Rhs
+pub impl @prettyprinter.Pretty for Rhs
+pub impl Show for Rhs
+pub impl ToJson for Rhs
 
 pub(all) struct SetLike {
   idl_type : IDLTypeWithExtAttr
   readonly_ : Bool
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for SetLike
-impl Show for SetLike
+pub impl @prettyprinter.Pretty for SetLike
+pub impl Show for SetLike
+pub impl ToJson for SetLike
 
 pub(all) enum StringType {
   ByteString
   DOMString
   USVString
 }
-impl @Yoorkin/prettyprinter.Pretty for StringType
-impl Show for StringType
+pub impl @prettyprinter.Pretty for StringType
+pub impl Show for StringType
+pub impl ToJson for StringType
 
 pub(all) struct Typedef {
   name : String
   idl_type : IDLTypeWithExtAttr
   attrs : @list.List[ExtAttr]
 }
-impl @Yoorkin/prettyprinter.Pretty for Typedef
-impl Show for Typedef
+pub impl @prettyprinter.Pretty for Typedef
+pub impl Show for Typedef
+pub impl ToJson for Typedef
 
 pub(all) enum Value {
   Decimal(String)
@@ -325,15 +355,16 @@ pub(all) enum Value {
   Sequence
   Dictionary
 }
-impl @Yoorkin/prettyprinter.Pretty for Value
-impl Show for Value
+pub impl @prettyprinter.Pretty for Value
+pub impl Show for Value
+pub impl ToJson for Value
 
 // Type aliases
-pub typealias @list.List[Definition] as Definitions
+pub type Definitions = @list.List[Definition]
 
-pub typealias @list.List[ExtAttr] as ExtAttrs
+pub type ExtAttrs = @list.List[ExtAttr]
 
-pub typealias String as Id
+pub type Id = String
 
 // Traits
 
