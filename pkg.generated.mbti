@@ -8,7 +8,7 @@ import(
 )
 
 // Values
-fn parse_string(String, file? : String) -> @list.List[@syntax.Definition] raise @parser.IDLParseError
+pub fn parse_string(String, file? : String) -> @list.List[@syntax.Definition] raise @parser.IDLParseError
 
 // Errors
 

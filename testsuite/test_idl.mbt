@@ -18,7 +18,7 @@ fn @test.Test::write_tokens(
 fn @test.Test::run(self : Self) -> Unit raise {
   let file = self.name() + ".idl"
   let source = @fs.read_file_to_string(base + file)
-  let tokens = @parser.tokenize(source)
+  let tokens = @parser.tokenize(source.to_string_view())
   self.write_tokens(tokens)
   self.writeln("---------------------------------------------")
   let ast = @parser.parse(tokens)

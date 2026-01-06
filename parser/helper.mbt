@@ -7,7 +7,7 @@ pub fn parse(
 
 ///|
 pub(all) suberror IDLParseError {
-  LexFailed(@string.View)
+  LexFailed(StringView)
   ParseFailed(ParseError)
 }
 
@@ -49,7 +49,7 @@ pub fn parse_string(
   source : String,
   file? : String = "",
 ) -> @syntax.Definitions raise IDLParseError {
-  let tokens = tokenize(source, file~)
+  let tokens = tokenize(source.to_string_view(), file~)
   parse(tokens) catch {
     e => raise ParseFailed(e)
   }
