@@ -4,4 +4,5 @@ target/
 .moonagent/
 *.map.json
 _build/
+_build
 target
