@@ -1,11 +1,11 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "Yoorkin/webidl"
 
-import(
-  "Yoorkin/webidl/parser"
-  "Yoorkin/webidl/syntax"
-  "moonbitlang/core/list"
-)
+import {
+  "Yoorkin/webidl/parser",
+  "Yoorkin/webidl/syntax",
+  "moonbitlang/core/list",
+}
 
 // Values
 pub fn parse_string(String, file? : String) -> @list.List[@syntax.Definition] raise @parser.IDLParseError

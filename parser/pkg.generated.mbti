@@ -1,10 +1,10 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "Yoorkin/webidl/parser"
 
-import(
-  "Yoorkin/webidl/syntax"
-  "moonbitlang/core/list"
-)
+import {
+  "Yoorkin/webidl/syntax",
+  "moonbitlang/core/list",
+}
 
 // Values
 pub fn definitions(Array[(Token, Position, Position)], initial_pos? : Position) -> @list.List[@syntax.Definition] raise ParseError

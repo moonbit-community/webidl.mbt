@@ -1,0 +1,7 @@
+import {
+  "Yoorkin/webidl/syntax",
+}
+
+import {
+  "Yoorkin/webidl/syntax",
+} for "test"
