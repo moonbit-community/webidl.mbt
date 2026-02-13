@@ -1,0 +1,9 @@
+import {
+  "Yoorkin/webidl/syntax",
+  "moonbitlang/core/list",
+  "moonbitlang/core/string",
+}
+
+import {
+  "Yoorkin/webidl/syntax",
+} for "test"

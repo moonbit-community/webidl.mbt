@@ -1,6 +1,6 @@
 ///|
 fn lex_test(input : String) -> String {
-  let tokens = tokenize(input) catch {
+  let tokens = tokenize(input.to_string_view()) catch {
     err => {
       println(err)
       []
@@ -11,7 +11,7 @@ fn lex_test(input : String) -> String {
 
 ///|
 fn parse_test(input : String) -> @list.List[@syntax.Definition] {
-  parse(tokenize(input)) catch {
+  parse(tokenize(input.to_string_view())) catch {
     err => {
       println(err)
       @list.empty()

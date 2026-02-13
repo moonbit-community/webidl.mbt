@@ -11,133 +11,219 @@ type YYObj = Error
 priv suberror YYObj_Void
 
 ///|
-priv suberror YYObj_Id Id
+priv suberror YYObj_Id {
+  YYObj_Id(Id)
+}
 
 ///|
-priv suberror YYObj_Bool Bool
+priv suberror YYObj_Bool {
+  YYObj_Bool(Bool)
+}
 
 ///|
-priv suberror YYObj_Enum Enum
+priv suberror YYObj_Enum {
+  YYObj_Enum(Enum)
+}
 
 ///|
-priv suberror YYObj_List_Id_ List[Id]
+priv suberror YYObj_List_Id_ {
+  YYObj_List_Id_(List[Id])
+}
 
 ///|
-priv suberror YYObj_List_Member_ List[Member]
+priv suberror YYObj_List_Member_ {
+  YYObj_List_Member_(List[Member])
+}
 
 ///|
-priv suberror YYObj_List_String_ List[String]
+priv suberror YYObj_List_String_ {
+  YYObj_List_String_(List[String])
+}
 
 ///|
-priv suberror YYObj_List_Argument_ List[Argument]
+priv suberror YYObj_List_Argument_ {
+  YYObj_List_Argument_(List[Argument])
+}
 
 ///|
-priv suberror YYObj_List_Definition_ List[Definition]
+priv suberror YYObj_List_Definition_ {
+  YYObj_List_Definition_(List[Definition])
+}
 
 ///|
-priv suberror YYObj_List_DictionaryField_ List[DictionaryField]
+priv suberror YYObj_List_DictionaryField_ {
+  YYObj_List_DictionaryField_(List[DictionaryField])
+}
 
 ///|
-priv suberror YYObj_List_IDLTypeWithExtAttr_ List[IDLTypeWithExtAttr]
+priv suberror YYObj_List_IDLTypeWithExtAttr_ {
+  YYObj_List_IDLTypeWithExtAttr_(List[IDLTypeWithExtAttr])
+}
 
 ///|
-priv suberror YYObj_Const Const
+priv suberror YYObj_Const {
+  YYObj_Const(Const)
+}
 
 ///|
-priv suberror YYObj_Value Value
+priv suberror YYObj_Value {
+  YYObj_Value(Value)
+}
 
 ///|
-priv suberror YYObj_Member Member
+priv suberror YYObj_Member {
+  YYObj_Member(Member)
+}
 
 ///|
-priv suberror YYObj_String String
+priv suberror YYObj_String {
+  YYObj_String(String)
+}
 
 ///|
-priv suberror YYObj_ExtAttr ExtAttr
+priv suberror YYObj_ExtAttr {
+  YYObj_ExtAttr(ExtAttr)
+}
 
 ///|
-priv suberror YYObj_IDLType IDLType
+priv suberror YYObj_IDLType {
+  YYObj_IDLType(IDLType)
+}
 
 ///|
-priv suberror YYObj_MapLike MapLike
+priv suberror YYObj_MapLike {
+  YYObj_MapLike(MapLike)
+}
 
 ///|
-priv suberror YYObj_SetLike SetLike
+priv suberror YYObj_SetLike {
+  YYObj_SetLike(SetLike)
+}
 
 ///|
-priv suberror YYObj_Typedef Typedef
+priv suberror YYObj_Typedef {
+  YYObj_Typedef(Typedef)
+}
 
 ///|
-priv suberror YYObj_Argument Argument
+priv suberror YYObj_Argument {
+  YYObj_Argument(Argument)
+}
 
 ///|
-priv suberror YYObj_Callback Callback
+priv suberror YYObj_Callback {
+  YYObj_Callback(Callback)
+}
 
 ///|
-priv suberror YYObj_ExtAttrs ExtAttrs
+priv suberror YYObj_ExtAttrs {
+  YYObj_ExtAttrs(ExtAttrs)
+}
 
 ///|
-priv suberror YYObj_Includes Includes
+priv suberror YYObj_Includes {
+  YYObj_Includes(Includes)
+}
 
 ///|
-priv suberror YYObj_Iterable Iterable
+priv suberror YYObj_Iterable {
+  YYObj_Iterable(Iterable)
+}
 
 ///|
-priv suberror YYObj_Attribute Attribute
+priv suberror YYObj_Attribute {
+  YYObj_Attribute(Attribute)
+}
 
 ///|
-priv suberror YYObj_Interface Interface
+priv suberror YYObj_Interface {
+  YYObj_Interface(Interface)
+}
 
 ///|
-priv suberror YYObj_Namespace Namespace
+priv suberror YYObj_Namespace {
+  YYObj_Namespace(Namespace)
+}
 
 ///|
-priv suberror YYObj_Operation Operation
+priv suberror YYObj_Operation {
+  YYObj_Operation(Operation)
+}
 
 ///|
-priv suberror YYObj_Definition Definition
+priv suberror YYObj_Definition {
+  YYObj_Definition(Definition)
+}
 
 ///|
-priv suberror YYObj_Dictionary Dictionary
+priv suberror YYObj_Dictionary {
+  YYObj_Dictionary(Dictionary)
+}
 
 ///|
-priv suberror YYObj_StringType StringType
+priv suberror YYObj_StringType {
+  YYObj_StringType(StringType)
+}
 
 ///|
-priv suberror YYObj_Constructor Constructor
+priv suberror YYObj_Constructor {
+  YYObj_Constructor(Constructor)
+}
 
 ///|
-priv suberror YYObj_IntegerType IntegerType
+priv suberror YYObj_IntegerType {
+  YYObj_IntegerType(IntegerType)
+}
 
 ///|
-priv suberror YYObj_FloatingType FloatingType
+priv suberror YYObj_FloatingType {
+  YYObj_FloatingType(FloatingType)
+}
 
 ///|
-priv suberror YYObj_OperationKind OperationKind
+priv suberror YYObj_OperationKind {
+  YYObj_OperationKind(OperationKind)
+}
 
 ///|
-priv suberror YYObj_InterfaceMixin InterfaceMixin
+priv suberror YYObj_InterfaceMixin {
+  YYObj_InterfaceMixin(InterfaceMixin)
+}
 
 ///|
-priv suberror YYObj_DictionaryField DictionaryField
+priv suberror YYObj_DictionaryField {
+  YYObj_DictionaryField(DictionaryField)
+}
 
 ///|
-priv suberror YYObj_IDLTypeWithExtAttr IDLTypeWithExtAttr
+priv suberror YYObj_IDLTypeWithExtAttr {
+  YYObj_IDLTypeWithExtAttr(IDLTypeWithExtAttr)
+}
 
 ///|
-priv suberror YYObj_Id_ Id?
+priv suberror YYObj_Id_ {
+  YYObj_Id_(Id?)
+}
 
 ///|
-priv suberror YYObj_List_Argument__ List[Argument]?
+priv suberror YYObj_List_Argument__ {
+  YYObj_List_Argument__(List[Argument]?)
+}
 
 ///|
-priv suberror YYObj_Value_ Value?
+priv suberror YYObj_Value_ {
+  YYObj_Value_(Value?)
+}
 
 ///|
-priv suberror YYObj_String_ String?
+priv suberror YYObj_String_ {
+  YYObj_String_(String?)
+}
 
 ///|
-priv suberror YYObj_IDLTypeWithExtAttr_ IDLTypeWithExtAttr?
+priv suberror YYObj_IDLTypeWithExtAttr_ {
+  YYObj_IDLTypeWithExtAttr_(IDLTypeWithExtAttr?)
+}
 
 ///|
 type YYState = (YYSymbol) -> YYDecision
@@ -11252,17 +11338,14 @@ fn error(
                   _ => panic()
                 }
               }
-
               inner_go(stack, count, symbol)
             }
             Error => ()
           }
       }
     }
-
     go(stack)
   }
-
   for
     term in (
       [

@@ -74,14 +74,14 @@ let keywords : Map[String, Token] = {
 
 ///|
 pub fn tokenize(
-  input : @string.View,
+  input : StringView,
   file? : String = "",
 ) -> Array[(Token, Position, Position)] raise IDLParseError {
   let mut line = 1
   let mut column = 1
   let mut remain = input
   let acc : Array[(Token, Position, Position)] = []
-  fn push(token : Token, lexeme : @string.View, xs : @string.View) {
+  fn push(token : Token, lexeme : StringView, xs : StringView) {
     let start = { file, line, column }
     let end = { file, line, column: column + lexeme.length() }
     acc.push((token, start, end))
