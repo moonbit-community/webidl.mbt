@@ -1,3 +1,4 @@
 import {
   "Yoorkin/prettyprinter",
+  "moonbitlang/core/list",
 }
